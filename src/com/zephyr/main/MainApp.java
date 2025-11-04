@@ -28,7 +28,11 @@ public class MainApp extends Application {
 
 
             primaryStage.setTitle("Zephyr - Login");
-            primaryStage.setScene(new Scene(root, 600, 400));
+
+            //res al ejecutar
+            primaryStage.setScene(new Scene(root, 1280, 720));
+            primaryStage.setMinWidth(1024);
+            primaryStage.setMinHeight(768);
             primaryStage.show();
 
         } catch (IOException e) {
