@@ -49,8 +49,7 @@ public class DatabaseConnector {
 public static void main(String[] args) {
     System.out.println("Iniciando prueba de conexión a 'zephyr'...");
 
-    // Al llamar a getInstance(), se ejecuta el constructor privado
-    // que es donde está la lógica de conexión.
+
     DatabaseConnector.getInstance();
 
     System.out.println("Prueba de conexión finalizada.");
