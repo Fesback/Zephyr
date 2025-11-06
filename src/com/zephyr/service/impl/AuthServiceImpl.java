@@ -24,9 +24,13 @@ public class AuthServiceImpl implements AuthService {
 
         Personal personal = personalOptional.get();
 
+        String passDB = personal.getContrasenaHash().trim();
+        String passInput = contrasena.trim();
+
         if (personal.getContrasenaHash().equals(contrasena)) {
             return Optional.of(personal);
         } else {
+            System.err.println("Debug: Falló el login. BD='" + passDB + "' | Input='" + passInput + "'");
             return Optional.empty();
         }
     }
