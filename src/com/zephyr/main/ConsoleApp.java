@@ -4,21 +4,28 @@ import com.zephyr.domain.Personal;
 import com.zephyr.repository.PersonalRepository;
 import com.zephyr.repository.impl.PersonalRepositoryImpl;
 import com.zephyr.service.AuthService;
+import com.zephyr.service.PersonalService;
 import com.zephyr.service.impl.AuthServiceImpl;
+import com.zephyr.service.impl.PersonalServiceImpl;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleApp {
 
-    public static void main(String[] args) {
-        PersonalRepository  personalRepository = new PersonalRepositoryImpl();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static PersonalService personalService;
 
+    public static void main(String[] args) {
+        PersonalRepository personalRepository = new PersonalRepositoryImpl();
         AuthService authService = new AuthServiceImpl(personalRepository);
+        personalService = new PersonalServiceImpl(personalRepository);
 
         System.out.println("----- Sistema de Gestion Zephyr (Version Consola) -----");
-        Scanner scanner = new Scanner(System.in);
 
+        // login
         System.out.println("Introduzca su correo: ");
         String correo = scanner.nextLine();
 
@@ -34,6 +41,16 @@ public class ConsoleApp {
             System.out.println("Login Exitoso.");
             System.out.println("Tu Rol es: " + personal.getRol().getNombreRol());
             System.out.println("\n-----------------------------------------------");
+
+            // nw logic menu
+            if (personal.getRol().getNombreRol().equals("Administrador")) {
+                mostrarMenuAdmin();
+            } else if (personal.getRol().getNombreRol().equals("Agente de Puerta")) {
+                mostrarMenuAgente();
+            } else {
+                System.out.println("Funcionalidades limitadas para este rol.");
+            }
+
         } else {
             System.out.println("\n-----------------------------------------------");
             System.out.println("ERROR: Correo o Contrasena INCORRECTOS");
@@ -41,6 +58,135 @@ public class ConsoleApp {
         }
 
         scanner.close();
+        System.out.println("Saliendo del Sistema...");
     }
 
+    // Admin menu method
+    private static void mostrarMenuAdmin() {
+        boolean salir = false;
+
+        while (!salir) {
+            System.out.println("\n---- Menú de Administrador ----");
+            System.out.println("1. Listar todo el Personal (Read)");
+            System.out.println("2. Registrar nuevo Agente (Create)");
+            System.out.println("3. Actualizar Agente (Update)");
+            System.out.println("4. Eliminar Agente (Delete)");
+            System.out.println("5. Probar Cola de Embarque (LinkedList)");
+            System.out.println("6. Salir");
+            System.out.print("Seleccione una opción: ");
+
+            String opcion = scanner.nextLine();
+
+            switch (opcion) {
+                case "1":
+                    listarPersonal();
+                    break;
+                case "2":
+                    registrarAgente();
+                    break;
+                case "3":
+                    actualizarAgente();
+                    break;
+                case "4":
+                    eliminarAgente();
+                    break;
+                case "5":
+                    simularColaDeEmbarque();
+                    break;
+                case "6":
+                    salir = true;
+                    break;
+                default:
+                    System.out.println("Opcion no valida. intenta de nuevo");
+            }
+        }
+    }
+
+
+    //Listar
+    private static void listarPersonal() {
+        System.out.println("\n---- Lista de Personal ----");
+        List<Personal> personalLista = personalService.listarTodoElPersonal();
+        if (personalLista.isEmpty()) {
+            System.out.println("No hay personal registrado.");
+            return;
+        }
+        for (Personal p : personalLista) {
+            System.out.println("ID: " + p.getIdPersonal() + " | Nombre: " + p.getNombres() + " " + p.getApellidos() +
+                    " | Correo: " + p.getCorreo() + " | Rol: " + p.getRol().getNombreRol());
+        }
+    }
+
+    private static void registrarAgente() {
+        System.out.println("\n---- Registro de Nuevo Agente ----");
+        System.out.print("Nombres: ");
+        String nombres = scanner.nextLine();
+        System.out.print("Apellidos: ");
+        String apellidos = scanner.nextLine();
+        System.out.print("Correo: ");
+        String correo = scanner.nextLine();
+        System.out.print("Contraseña temporal: ");
+        String pass = scanner.nextLine();
+
+        personalService.registrarNuevoAgente(nombres, apellidos, correo, pass);
+        System.out.println("\n¡Agente " + nombres + " registrado exitosamente!");
+    }
+
+    private static void actualizarAgente() {
+        System.out.println("\n---- Actualizar Agente ----");
+        System.out.print("Ingrese el ID del agente a actualizar: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Ingrese el nuevo correo: ");
+        String nuevoCorreo = scanner.nextLine();
+        System.out.print("Ingrese el nuevo turno (Mañana/Tarde/Noche): ");
+        String nuevoTurno = scanner.nextLine();
+
+        personalService.actualizarInformacionAgente(id, nuevoCorreo, nuevoTurno);
+        System.out.println("\n¡Agente actualizado!");
+    }
+
+    private static void eliminarAgente() {
+        System.out.println("\n---- Eliminar Agente ----");
+        System.out.print("Ingrese el ID del agente a eliminar: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        personalService.eliminarAgente(id);
+        System.out.println("\n¡Agente eliminado!");
+    }
+
+    // --- 6. DEMO DE LINKEDLIST (Requisito del sílabo) ---
+    private static void simularColaDeEmbarque() {
+        LinkedList<String> colaEmbarque = new LinkedList<>();
+
+        System.out.println("\n---- Simulación de Cola de Embarque (LinkedList) ----");
+
+        // Añadimos pasajeros a la cola (al final)
+        colaEmbarque.add("Juan Pérez (Asiento 12A)");
+        colaEmbarque.add("Maria García (Asiento 12B)");
+        colaEmbarque.add("Carlos Sánchez (Asiento 12C)");
+
+        System.out.println("Pasajeros en la cola de espera: " + colaEmbarque);
+
+        // Empezamos a embarcar (quitamos del inicio)
+        String pasajeroEmbarcando = colaEmbarque.poll();
+        System.out.println("Embarcando a: " + pasajeroEmbarcando);
+        System.out.println("Pasajeros restantes: " + colaEmbarque);
+
+        pasajeroEmbarcando = colaEmbarque.poll();
+        System.out.println("Embarcando a: " + pasajeroEmbarcando);
+        System.out.println("Pasajeros restantes: " + colaEmbarque);
+    }
+
+    // --- 7. MENÚ DE AGENTE (Ejemplo básico) ---
+    private static void mostrarMenuAgente() {
+        System.out.println("\n---- Menú de Agente de Puerta ----");
+        System.out.println("1. Verificar pasajero (Función no implementada en consola)");
+        System.out.println("2. Salir");
+        System.out.print("Seleccione una opción: ");
+        scanner.nextLine();
+    }
 }
+
+
+
