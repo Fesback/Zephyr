@@ -37,6 +37,9 @@ public class LoginController {
     @FXML
     private void initialize() {
         loginButton.setOnAction(event -> handleLogin());
+        // para que inicie sesion con enter
+        loginButton.setDefaultButton(true);
+
     }
 
     private void handleLogin() {

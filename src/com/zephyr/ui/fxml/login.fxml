@@ -16,7 +16,7 @@
 
 <?import javafx.scene.control.PasswordField?>
 <GridPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.zephyr.ui.controller.LoginController">
+          fx:controller="com.zephyr.ui.controller.LoginController" stylesheets="@../css/login-page.css">
 
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="60.0" />
@@ -28,8 +28,7 @@
     </rowConstraints>
 
     <children>
-        <VBox styleClass="vbox_background_center" stylesheets="@../css/login-page.css"
-              GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <VBox styleClass="vbox_background_center"  GridPane.columnIndex="0" GridPane.rowIndex="0">
         </VBox>
 
         <VBox alignment="CENTER" spacing="20.0"
