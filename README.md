@@ -4,7 +4,7 @@ Sistema de escritorio para la gestión interna de operaciones de embarque y dese
 
 ---
 
-![Vista previa del sistema](./src/ui/images/989shots_so.png)
+![Vista previa del sistema](./src/com/zephyr/ui/images/989shots_so.png)
 
 ---
 
