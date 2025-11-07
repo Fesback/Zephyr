@@ -1,14 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.zephyr.ui.controller.DashboardController"
-            prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+<?import java.net.URL?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<BorderPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.zephyr.ui.controller.DashboardController">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+    </stylesheets>
+
+    <left>
+        <VBox fx:id="sideMenu" prefWidth="230.0" styleClass="side-menu"
+              BorderPane.alignment="CENTER">
+            <children>
+
+                <Label alignment="CENTER" prefHeight="55.0" prefWidth="230.0" text="ZEPHYR" styleClass="sidebar-title">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+
+                <Button fx:id="btnDashboard" text="Dashboard" styleClass="menu-button" />
+                <Button fx:id="btnAllFlights" text="All Flights" styleClass="menu-button" />
+                <Button fx:id="btnReports" text="Reports" styleClass="menu-button" />
+
+                <Button fx:id="btnSecurity" text="Security" styleClass="menu-button" />
+                <Button fx:id="btnOperations" text="Operations" styleClass="menu-button" />
+                <Button fx:id="btnResources" text="Resources" styleClass="menu-button" />
+
+                <VBox VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnConfiguracion" text="Configuracion" styleClass="menu-button-bottom" />
+
+            </children>
+        </VBox>
+    </left>
+
+    <top>
+        <BorderPane styleClass="top-bar" BorderPane.alignment="CENTER">
+            <right>
+                <Label fx:id="labelBienvenida" text="Cargando..." styleClass="label-bienvenida" />
+            </right>
+        </BorderPane>
+    </top>
+
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane"
+                    BorderPane.alignment="CENTER">
+
+            <content>
+                <VBox styleClass="main-content-vbox">
+                    <children>
+
+                        <Label text="Dashboard Overview" styleClass="dashboard-title" />
+
+                        <GridPane hgap="20.0" vgap="20.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+
+                                <VBox styleClass="stat-card" GridPane.columnIndex="0">
+                                    <children>
+                                        <Label text="Tiempo promedio de espera de los pasajeros" styleClass="stat-title" />
+                                        <Label text="8 mins" styleClass="stat-value" />
+                                        <Label text="+10% from previous day" styleClass="stat-change-positive" />
+                                    </children>
+                                </VBox>
+
+                                <VBox styleClass="stat-card" GridPane.columnIndex="1">
+                                    <children>
+                                        <Label text="Tráfico total de pasajeros" styleClass="stat-title" />
+                                        <Label text="12,500" styleClass="stat-value" />
+                                        <Label text="+5% from previous Day" styleClass="stat-change-positive" />
+                                    </children>
+                                </VBox>
+
+                                <VBox styleClass="stat-card" GridPane.columnIndex="2">
+                                    <children>
+                                        <Label text="Recuento total de vehículos en el estacionamiento" styleClass="stat-title" />
+                                        <Label text="3,200" styleClass="stat-value" />
+                                        <Label text="-2% from previous day" styleClass="stat-change-negative" />
+                                    </children>
+                                </VBox>
+
+                                <VBox styleClass="stat-card" GridPane.columnIndex="3">
+                                    <children>
+                                        <Label text="Tiempo de permanencia en todas las zonas clave" styleClass="stat-title" />
+                                        <Label text="15 mins" styleClass="stat-value" />
+                                        <Label text="+8% from previous hour" styleClass="stat-change-positive" />
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </GridPane>
+
+                        <Label text="Vuelos del Día" styleClass="dashboard-subtitle" />
+
+                        <TableView fx:id="tablaVuelos" styleClass="table-view">
+                            <columns>
+                                <TableColumn fx:id="colCodigoVuelo" prefWidth="100.0" text="Código" />
+                                <TableColumn fx:id="colAerolinea" prefWidth="150.0" text="Aerolínea" />
+                                <TableColumn fx:id="colOrigen" prefWidth="120.0" text="Origen" />
+                                <TableColumn fx:id="colDestino" prefWidth="120.0" text="Destino" />
+                                <TableColumn fx:id="colEstado" prefWidth="150.0" text="Estado" />
+                                <TableColumn fx:id="colSalida" prefWidth="200.0" text="Hora Salida" />
+                            </columns>
+                        </TableView>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

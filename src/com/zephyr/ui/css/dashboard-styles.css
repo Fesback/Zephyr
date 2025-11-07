@@ -1,0 +1,272 @@
+/* Paleta de Colores (Tu paleta Blanco y Negro) */
+.root {
+    -primary-dark: #000000;
+    -secondary-dark: #1a1a1a;
+    -light-background: #ffffff; /* Fondo principal blanco */
+    -card-background: #ffffff;
+    -border-color: #e0e0e0;
+    -text-color-primary: #000000;
+    -text-color-secondary: #666666;
+    -accent-color: #000000;
+    -hover-color: #000000;
+    -font-family: "Segoe UI", sans-serif;
+}
+
+/* ============================== */
+/* ESTILO GLOBAL                  */
+/* ============================== */
+.label {
+    -fx-font-family: -font-family;
+    -fx-text-fill: -text-color-primary;
+}
+
+.button {
+    -fx-font-family: -font-family;
+    -fx-cursor: hand;
+}
+
+/* ============================== */
+/* BORDERPANE RAIZ (Fondo de toda la ventana) */
+/* ============================== */
+/* Usamos tu fondo blanco */
+.border-pane-root {
+    -fx-background-color: -light-background;
+}
+
+/* ============================== */
+/* MENÚ LATERAL (Tu diseño)     */
+/* ============================== */
+.side-menu {
+    -fx-background-color: -card-background; /* Fondo blanco */
+    -fx-padding: 20px 0;
+    -fx-spacing: 15px;
+    -fx-alignment: top-center;
+    -fx-border-color: -border-color;
+    -fx-border-width: 0 1px 0 0; /* Borde derecho */
+}
+
+.sidebar-title {
+    -fx-text-fill: -accent-color; /* Negro */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 30px 0;
+}
+
+.menu-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: -text-color-primary;
+    -fx-font-size: 16px;
+    -fx-alignment: center-left;
+    -fx-padding: 10px 20px;
+    -fx-pref-width: 230px;
+    -fx-graphic-text-gap: 15px;
+    -fx-background-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+}
+
+/* Tu hover negro */
+.menu-button:hover {
+    -fx-background-color: -hover-color;
+    -fx-text-fill: #ffffff;
+}
+
+/* Tu botón activo negro */
+.menu-button:focused,
+.menu-button-active {
+    -fx-background-color: -accent-color;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+}
+
+.menu-button:focused .text,
+.menu-button-active .text {
+    -fx-fill: #ffffff;
+}
+
+.menu-button .ikonli-font-icon {
+    -ikonli-fill: -text-color-primary;
+    -ikonli-font-size: 20px;
+}
+
+.menu-button:hover .ikonli-font-icon,
+.menu-button:focused .ikonli-font-icon,
+.menu-button-active .ikonli-font-icon {
+    -ikonli-fill: #ffffff;
+}
+
+.menu-button-bottom {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: -text-color-primary;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+    -fx-pref-width: 230px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px 0 0 0;
+    -fx-border-insets: 20px 0 0 0;
+    -fx-background-insets: 20px 0 0 0;
+}
+
+.menu-button-bottom:hover {
+    -fx-background-color: -hover-color;
+    -fx-text-fill: #ffffff;
+}
+
+/* ============================== */
+/* BARRA SUPERIOR (Tu diseño)     */
+/* ============================== */
+.top-bar {
+    -fx-background-color: -card-background; /* Blanco */
+    -fx-padding: 10px 20px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 0 0 1px 0;
+    -fx-alignment: center-left;
+}
+
+.label-bienvenida {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-primary;
+}
+
+/* ============================== */
+/* CONTENIDO PRINCIPAL (ACTUALIZADO) */
+/* ============================== */
+
+/* El ScrollPane debe ser transparente */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* El VBox de contenido debe ser blanco */
+.main-content-vbox {
+    -fx-background-color: -light-background; /* Blanco */
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+.dashboard-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-primary;
+    -fx-padding: 0 0 10px 0;
+}
+
+.dashboard-subtitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-primary;
+    -fx-padding: 10px 0 0 0;
+}
+
+
+/* ============================== */
+/* TARJETAS DE ESTADÍSTICAS (Adaptadas a tu tema) */
+/* ============================== */
+.stat-card {
+    -fx-padding: 20px;
+    -fx-background-color: -card-background; /* Blanco */
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-spacing: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);
+}
+
+.stat-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-color-secondary; /* Tu gris secundario */
+    -fx-font-weight: normal;
+}
+
+.stat-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-primary; /* Tu negro primario */
+}
+
+/* Dejamos los colores de "cambio" porque son universales */
+.stat-change-positive {
+    -fx-font-size: 13px;
+    -fx-text-fill: #27AE60; /* Verde */
+    -fx-font-weight: bold;
+}
+
+.stat-change-negative {
+    -fx-font-size: 13px;
+    -fx-text-fill: #E74C3C; /* Rojo */
+    -fx-font-weight: bold;
+}
+
+
+/* ============================== */
+/* TABLEVIEW (Tu diseño)          */
+/* ============================== */
+.table-view {
+    -fx-background-color: -card-background;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0, 0, 5);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -card-background;
+    -fx-background-radius: 8px 8px 0 0;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+}
+
+.table-view .label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-primary;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, -card-background;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #fafafa;
+}
+
+/* Tu selección en negro */
+.table-row-cell:selected {
+    -fx-background-color: -accent-color;
+    -fx-text-fill: #ffffff;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+.table-cell {
+    -fx-border-color: transparent;
+    -fx-padding: 10px 10px 10px 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: -text-color-primary;
+}
+
+.table-view .scroll-bar:vertical .thumb,
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: -text-color-secondary;
+    -fx-background-radius: 5em;
+}
