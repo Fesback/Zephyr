@@ -12,8 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -26,6 +30,24 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TableView<Vuelo> tablaVuelos;
+
+    @FXML
+    private TableColumn<Vuelo,String> colCodigoVuelo;
+
+    @FXML
+    private TableColumn<Vuelo,String> colAerolinea;
+
+    @FXML
+    private TableColumn<Vuelo,String> colOrigen;
+
+    @FXML
+    private TableColumn<Vuelo,String> colDestino;
+
+    @FXML
+    private TableColumn<Vuelo,String> colEstado;
+
+    @FXML
+    private TableColumn<Vuelo, LocalDateTime> colSalida;
 
     private final VueloService vueloService;
 
@@ -48,6 +70,14 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        colCodigoVuelo.setCellValueFactory(new PropertyValueFactory<>("codigoVuelo"));
+        colAerolinea.setCellValueFactory(new PropertyValueFactory<>("aerolinea"));
+        colOrigen.setCellValueFactory(new PropertyValueFactory<>("origenIata"));
+        colDestino.setCellValueFactory(new PropertyValueFactory<>("destinoIata"));
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoVuelo"));
+        colSalida.setCellValueFactory(new PropertyValueFactory<>("fechaSalida"));
+
         tablaVuelos.setItems(listaDeVuelosObservable);
         cargarVuelosDelDia();
     }

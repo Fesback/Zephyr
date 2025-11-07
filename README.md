@@ -4,6 +4,10 @@ Sistema de escritorio para la gestión interna de operaciones de embarque y dese
 
 ---
 
+![Vista previa del sistema](./src/ui/images/989shots_so.png)
+
+---
+
 ## 📖 Descripción del Proyecto
 
 **Zephyr** es una aplicación de escritorio (JavaFX) diseñada para el personal interno de un aeropuerto (agentes de puerta y supervisores de operaciones). El sistema permite administrar, controlar y monitorear todo el ciclo de vida de un vuelo, desde su programación hasta la finalización del desembarque, con un enfoque principal en la gestión de pasajeros y el embarque.
