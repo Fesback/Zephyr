@@ -86,7 +86,7 @@
                                     <children>
                                         <Label text="Tiempo promedio de espera de los pasajeros" styleClass="stat-title" />
                                         <Label text="8 mins" styleClass="stat-value" />
-                                        <Label text="+10% from previous day" styleClass="stat-change-positive" />
+                                        <Label text="+10% del día anterior" styleClass="stat-change-positive" />
                                     </children>
                                 </VBox>
 
@@ -94,7 +94,7 @@
                                     <children>
                                         <Label text="Tráfico total de pasajeros" styleClass="stat-title" />
                                         <Label text="12,500" styleClass="stat-value" />
-                                        <Label text="+5% from previous Day" styleClass="stat-change-positive" />
+                                        <Label text="+5% del día anterior" styleClass="stat-change-positive" />
                                     </children>
                                 </VBox>
 
@@ -102,7 +102,7 @@
                                     <children>
                                         <Label text="Recuento total de vehículos en el estacionamiento" styleClass="stat-title" />
                                         <Label text="3,200" styleClass="stat-value" />
-                                        <Label text="-2% from previous day" styleClass="stat-change-negative" />
+                                        <Label text="-2% del día anterior" styleClass="stat-change-negative" />
                                     </children>
                                 </VBox>
 
@@ -110,7 +110,7 @@
                                     <children>
                                         <Label text="Tiempo de permanencia en todas las zonas clave" styleClass="stat-title" />
                                         <Label text="15 mins" styleClass="stat-value" />
-                                        <Label text="+8% from previous hour" styleClass="stat-change-positive" />
+                                        <Label text="+8% de la hora anterior" styleClass="stat-change-positive" />
                                     </children>
                                 </VBox>
 
