@@ -117,6 +117,7 @@ public class ConsoleApp {
         }
     }
 
+    // Crear
     private static void registrarAgente() {
         System.out.println("\n---- Registro de Nuevo Agente ----");
         System.out.print("Nombres: ");
@@ -132,6 +133,7 @@ public class ConsoleApp {
         System.out.println("\n¡Agente " + nombres + " registrado exitosamente!");
     }
 
+    // Actualizar
     private static void actualizarAgente() {
         System.out.println("\n---- Actualizar Agente ----");
         System.out.print("Ingrese el ID del agente a actualizar: ");
@@ -146,6 +148,7 @@ public class ConsoleApp {
         System.out.println("\n¡Agente actualizado!");
     }
 
+    // Eliminar
     private static void eliminarAgente() {
         System.out.println("\n---- Eliminar Agente ----");
         System.out.print("Ingrese el ID del agente a eliminar: ");
@@ -155,20 +158,18 @@ public class ConsoleApp {
         System.out.println("\n¡Agente eliminado!");
     }
 
-    // --- 6. DEMO DE LINKEDLIST (Requisito del sílabo) ---
+    // linkedlist
     private static void simularColaDeEmbarque() {
         LinkedList<String> colaEmbarque = new LinkedList<>();
 
         System.out.println("\n---- Simulación de Cola de Embarque (LinkedList) ----");
 
-        // Añadimos pasajeros a la cola (al final)
         colaEmbarque.add("Juan Pérez (Asiento 12A)");
         colaEmbarque.add("Maria García (Asiento 12B)");
         colaEmbarque.add("Carlos Sánchez (Asiento 12C)");
 
         System.out.println("Pasajeros en la cola de espera: " + colaEmbarque);
 
-        // Empezamos a embarcar (quitamos del inicio)
         String pasajeroEmbarcando = colaEmbarque.poll();
         System.out.println("Embarcando a: " + pasajeroEmbarcando);
         System.out.println("Pasajeros restantes: " + colaEmbarque);
@@ -178,7 +179,6 @@ public class ConsoleApp {
         System.out.println("Pasajeros restantes: " + colaEmbarque);
     }
 
-    // --- 7. MENÚ DE AGENTE (Ejemplo básico) ---
     private static void mostrarMenuAgente() {
         System.out.println("\n---- Menú de Agente de Puerta ----");
         System.out.println("1. Verificar pasajero (Función no implementada en consola)");
