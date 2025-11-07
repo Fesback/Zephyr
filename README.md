@@ -64,6 +64,19 @@ La base de datos `zephyr` en PostgreSQL es el núcleo del sistema. Está altamen
 * **Vistas (Views):** Se utilizan 4 vistas principales (ej. `v_vuelos_programados`, `v_pasajeros_por_vuelo`) para simplificar las consultas de lectura complejas para la aplicación Java.
 * **Procedimientos Almacenados (SPs):** La lógica de negocio crítica (ej. actualizar estados, verificar pasajeros) se maneja a través de SPs para garantizar la integridad transaccional.
 
+
+1.  **Crea una Base de Datos llamad "zephyr"**
+
+
+2.  **Ejecuta los scripts de la carpeta `/database` en este orden:**
+    * `tables.sql`
+    * `inserts.sql`
+    * `view_SProcedures.sql`
+    * `Transac_inserts.sql`
+    
+
+3.  **Listo! tienes la base de datos configurada.**
+    
 ## 🚀 Cómo Empezar
 
 Sigue estos pasos para ejecutar el proyecto localmente.
