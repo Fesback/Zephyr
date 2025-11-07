@@ -28,25 +28,18 @@
         <VBox fx:id="sideMenu" prefWidth="230.0" styleClass="side-menu"
               BorderPane.alignment="CENTER">
             <children>
-
                 <Label alignment="CENTER" prefHeight="55.0" prefWidth="230.0" text="ZEPHYR" styleClass="sidebar-title">
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Label>
-
-                <Button fx:id="btnDashboard" text="Dashboard" styleClass="menu-button" />
-                <Button fx:id="btnAllFlights" text="All Flights" styleClass="menu-button" />
-                <Button fx:id="btnReports" text="Reports" styleClass="menu-button" />
-
-                <Button fx:id="btnSecurity" text="Security" styleClass="menu-button" />
-                <Button fx:id="btnOperations" text="Operations" styleClass="menu-button" />
-                <Button fx:id="btnResources" text="Resources" styleClass="menu-button" />
-
+                <Button fx:id="btnDashboard" text="Dashboard" styleClass="menu-button, menu-button-active" />
+                <Button fx:id="btnGestionVuelos" text="Gestión de Vuelos" styleClass="menu-button" />
+                <Button fx:id="btnEmbarque" text="Embarque" styleClass="menu-button" />
+                <Button fx:id="btnGestionPersonal" text="Gestión de Personal" styleClass="menu-button" />
+                <Button fx:id="btnReportes" text="Reportes" styleClass="menu-button" />
                 <VBox VBox.vgrow="ALWAYS" />
-
                 <Button fx:id="btnConfiguracion" text="Configuracion" styleClass="menu-button-bottom" />
-
             </children>
         </VBox>
     </left>
@@ -63,11 +56,9 @@
     <center>
         <ScrollPane fitToWidth="true" styleClass="scroll-pane"
                     BorderPane.alignment="CENTER">
-
             <content>
                 <VBox styleClass="main-content-vbox">
                     <children>
-
                         <Label text="Dashboard Overview" styleClass="dashboard-title" />
 
                         <GridPane hgap="20.0" vgap="20.0">
@@ -81,15 +72,13 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-
                                 <VBox styleClass="stat-card" GridPane.columnIndex="0">
                                     <children>
-                                        <Label text="Tiempo promedio de espera de los pasajeros" styleClass="stat-title" />
+                                        <Label text="Tiempo promedio de espera" styleClass="stat-title" />
                                         <Label text="8 mins" styleClass="stat-value" />
                                         <Label text="+10% del día anterior" styleClass="stat-change-positive" />
                                     </children>
                                 </VBox>
-
                                 <VBox styleClass="stat-card" GridPane.columnIndex="1">
                                     <children>
                                         <Label text="Tráfico total de pasajeros" styleClass="stat-title" />
@@ -97,23 +86,20 @@
                                         <Label text="+5% del día anterior" styleClass="stat-change-positive" />
                                     </children>
                                 </VBox>
-
                                 <VBox styleClass="stat-card" GridPane.columnIndex="2">
                                     <children>
-                                        <Label text="Recuento total de vehículos en el estacionamiento" styleClass="stat-title" />
+                                        <Label text="Vehículos en estacionamiento" styleClass="stat-title" />
                                         <Label text="3,200" styleClass="stat-value" />
                                         <Label text="-2% del día anterior" styleClass="stat-change-negative" />
                                     </children>
                                 </VBox>
-
                                 <VBox styleClass="stat-card" GridPane.columnIndex="3">
                                     <children>
-                                        <Label text="Tiempo de permanencia en todas las zonas clave" styleClass="stat-title" />
+                                        <Label text="Tiempo de permanencia" styleClass="stat-title" />
                                         <Label text="15 mins" styleClass="stat-value" />
                                         <Label text="+8% de la hora anterior" styleClass="stat-change-positive" />
                                     </children>
                                 </VBox>
-
                             </children>
                         </GridPane>
 
@@ -129,11 +115,56 @@
                                 <TableColumn fx:id="colSalida" prefWidth="200.0" text="Hora Salida" />
                             </columns>
                         </TableView>
-
                     </children>
                 </VBox>
             </content>
         </ScrollPane>
     </center>
+
+    <right>
+        <VBox fx:id="panelDeAcciones" prefWidth="300.0"
+              styleClass="details-pane" spacing="10"
+              visible="false" BorderPane.alignment="CENTER">
+            <children>
+
+                <Label text="Detalles del Vuelo" styleClass="dashboard-subtitle" />
+
+                <GridPane styleClass="details-grid" hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+
+                    <Label text="Código:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                    <Label fx:id="detalleCodigo" text="-" styleClass="details-value"
+                           GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                    <Label text="Estado:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                    <Label fx:id="detalleEstado" text="-" styleClass="details-value"
+                           GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                    <Label text="Puerta:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                    <Label fx:id="detallePuerta" text="-" styleClass="details-value"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                </GridPane>
+
+                <VBox fx:id="seccionAccionesSupervisor" spacing="10" style="-fx-padding: 20px 0 0 0;">
+                    <children>
+                        <Label text="Acciones de Supervisor" styleClass="details-title" />
+
+                        <Button fx:id="btnIniciarEmbarque" text="Iniciar Embarque"
+                                styleClass="action-button-success" maxWidth="Infinity" />
+
+                        <Button fx:id="btnRetrasarVuelo" text="Retrasar Vuelo"
+                                styleClass="action-button-danger" maxWidth="Infinity" />
+
+                        <Button fx:id="btnAsignarPuerta" text="Asignar Puerta"
+                                styleClass="action-button-secondary" maxWidth="Infinity" />
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+    </right>
 
 </BorderPane>

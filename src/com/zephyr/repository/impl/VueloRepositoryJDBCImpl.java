@@ -4,10 +4,7 @@ import com.zephyr.domain.Vuelo;
 import com.zephyr.repository.VueloRepository;
 import com.zephyr.util.DatabaseConnector;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +46,23 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
     public Optional<Vuelo> findVueloDetalladoById(int idVuelo) {
         System.err.println("findVueloDetalladoById() no implementado");
         return Optional.empty();
+    }
+
+    @Override
+    public void actualizarEstadoVuelo(int idVuelo, int idNuevoEstado) {
+        String sql = "SELECT sp_actualizar_estado_vuelo(?,?);";
+        try (CallableStatement cstmt = conn.prepareCall(sql)) {
+            cstmt.setInt(1, idVuelo);
+            cstmt.setInt(2, idNuevoEstado);
+            ResultSet rs = cstmt.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Respuesta de la BD: " + rs.getString(1));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al llamar al SP");
+            e.printStackTrace();
+        }
     }
 
     private Vuelo mapResultSetToVuelo(ResultSet rs) throws SQLException {

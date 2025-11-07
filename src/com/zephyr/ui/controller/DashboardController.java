@@ -11,10 +11,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -25,32 +24,29 @@ public class DashboardController implements Initializable {
 
     private Personal usuarioLogueado;
 
-    @FXML
-    private Label labelBienvenida;
+    private Vuelo vueloSeleccionado;
 
-    @FXML
-    private TableView<Vuelo> tablaVuelos;
+    @FXML private Button btnDashboard, btnGestionVuelos, btnEmbarque,btnGestionPersonal, btnReportes, btnConfiguracion;
 
-    @FXML
-    private TableColumn<Vuelo,String> colCodigoVuelo;
+    @FXML private Label labelBienvenida;
+    @FXML private TableView<Vuelo> tablaVuelos;
+    @FXML private TableColumn<Vuelo,String> colCodigoVuelo;
+    @FXML private TableColumn<Vuelo,String> colAerolinea;
+    @FXML private TableColumn<Vuelo,String> colOrigen;
+    @FXML private TableColumn<Vuelo,String> colDestino;
+    @FXML private TableColumn<Vuelo,String> colEstado;
+    @FXML private TableColumn<Vuelo, LocalDateTime> colSalida;
 
-    @FXML
-    private TableColumn<Vuelo,String> colAerolinea;
-
-    @FXML
-    private TableColumn<Vuelo,String> colOrigen;
-
-    @FXML
-    private TableColumn<Vuelo,String> colDestino;
-
-    @FXML
-    private TableColumn<Vuelo,String> colEstado;
-
-    @FXML
-    private TableColumn<Vuelo, LocalDateTime> colSalida;
+    @FXML private VBox panelDeAcciones;
+    @FXML private VBox seccionAccionesSupervisor;
+    @FXML private Label detalleCodigo;
+    @FXML private Label detalleEstado;
+    @FXML private Label detallePuerta;
+    @FXML private Button btnIniciarEmbarque;
+    @FXML private Button btnRetrasarVuelo;
+    @FXML private Button btnAsignarPuerta;
 
     private final VueloService vueloService;
-
     private ObservableList<Vuelo> listaDeVuelosObservable;
 
     public DashboardController() {
@@ -80,6 +76,26 @@ public class DashboardController implements Initializable {
 
         tablaVuelos.setItems(listaDeVuelosObservable);
         cargarVuelosDelDia();
+
+        tablaVuelos.getSelectionModel().selectedItemProperty().addListener((observable,
+                                                                            oldValue, newValue) -> mostrarDetallesVuelo(newValue));
+
+        btnIniciarEmbarque.setOnAction(event -> handleActualizarEstado(2, "Embarcando"));
+        btnRetrasarVuelo.setOnAction(event -> handleActualizarEstado(5,"Retrasado"));
+    }
+
+    private void mostrarDetallesVuelo(Vuelo vuelo) {
+        if (vuelo != null) {
+            this.vueloSeleccionado = vuelo;
+
+            detalleCodigo.setText(vuelo.getCodigoVuelo());
+            detalleEstado.setText(vuelo.getEstadoVuelo());
+            detallePuerta.setText(vuelo.getCodigoPuerta() != null ? vuelo.getCodigoPuerta() : "Sin asignar");
+
+            panelDeAcciones.setVisible(true);
+        } else {
+            panelDeAcciones.setVisible(false);
+        }
     }
 
     private void cargarVuelosDelDia() {
@@ -90,7 +106,42 @@ public class DashboardController implements Initializable {
         System.out.println("Dashboard: Se cargaron " + vuelos.size() + " vuelos");
     }
 
+    private void handleActualizarEstado(int idNuevoEstado, String nombreEstado) {
+        Vuelo vueloClicado = tablaVuelos.getSelectionModel().getSelectedItem();
+        if (vueloClicado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Sin seleccion", "Por favor seleciione un vuelo de la tabla primero");
+            return;
+        }
+
+        System.out.println("Intentando cambiar estado del Vuelo ID: " + vueloClicado.getIdVuelo() + " a '"  + nombreEstado + "'");
+        vueloService.actualizarEstadoVuelo(vueloClicado.getIdVuelo(), idNuevoEstado);
+        mostrarAlerta(Alert.AlertType.INFORMATION, "Exito", "El vuelo " + vueloClicado.getCodigoVuelo() + " ha sido actualizado a: " + nombreEstado);
+        cargarVuelosDelDia();
+
+        tablaVuelos.getSelectionModel().clearSelection();
+        panelDeAcciones.setVisible(false);
+    }
+
     private void configurarVistaPorRol(String rol) {
         System.out.println("COnfigurando vista para el rol: " + rol);
+
+        if (rol.equals("Agente de Puerta")) {
+            // un  agente no puede ver la seccion de acciones del supervisor
+            seccionAccionesSupervisor.setVisible(false);
+            seccionAccionesSupervisor.setManaged(false);
+
+            // entonces oculto los botones del menu lateral
+            btnGestionPersonal.setVisible(false);
+            btnConfiguracion.setVisible(false);
+
+        }
+    }
+
+    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String contenido) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
     }
 }

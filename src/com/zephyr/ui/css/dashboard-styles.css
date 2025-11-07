@@ -248,10 +248,13 @@
     -fx-background-color: -fx-table-cell-border-color, #fafafa;
 }
 
-/* Tu selección en negro */
+
 .table-row-cell:selected {
-    -fx-background-color: -accent-color;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #EAEAEA;
+}
+
+.table-row-cell:selected .text{
+    -fx-fill: -text-color-primary;
 }
 
 .table-row-cell:hover {
@@ -269,4 +272,61 @@
 .table-view .scroll-bar:horizontal .thumb {
     -fx-background-color: -text-color-secondary;
     -fx-background-radius: 5em;
+}
+
+/* ============================== */
+/* PANEL LATERAL DERECHO (DETALLES) */
+/* ============================== */
+
+.details-pane {
+    -fx-background-color: -card-background;
+    -fx-padding: 20px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 0 0 0 1px;
+}
+
+.details-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-primary;
+}
+
+.details-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-color-secondary;
+}
+
+/* --- Botones de Acción --- */
+.action-button-success {
+    -fx-background-color: #27AE60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}
+.action-button-success:hover {
+    -fx-background-color: derive(#27AE60, -10%);
+}
+
+.action-button-danger {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}
+.action-button-danger:hover {
+    -fx-background-color: derive(#E74C3C, -10%);
+}
+
+.action-button-secondary {
+    -fx-background-color: -text-color-secondary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}
+.action-button-secondary:hover {
+    -fx-background-color: derive(-text-color-secondary, -10%);
 }

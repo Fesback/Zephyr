@@ -18,4 +18,10 @@ public class VueloServiceImpl implements VueloService {
     public List<Vuelo> getVuelosProgramadosHoy() {
         return vueloRepository.findVuelosDetalladosDelDia();
     }
+
+    @Override
+    public void actualizarEstadoVuelo(int idVuelo, int idNuevoEstado) {
+        System.out.println("[Debug Service] peticion para actualizar estado del vuelo ID: " + idVuelo);
+        vueloRepository.actualizarEstadoVuelo(idVuelo, idNuevoEstado);
+    }
 }
