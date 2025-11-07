@@ -14,7 +14,7 @@ select
 	a.codigo_iata as aerolinea_iata,
 	
 	av.matricula as avion_matricula,
-	ma.nombre_modelo as avion_iata,
+	ma.nombre_modelo as avion_modelo,
 	ma.capacidad_pasajeros,
 	
 	ao.nombre as aeropuerto_origen,

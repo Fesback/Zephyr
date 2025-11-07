@@ -62,7 +62,7 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
                 rs.getString("aerolinea_iata"),
                 rs.getString("avion_matricula"),
                 rs.getString("avion_modelo"),
-                rs.getInt("capcaidad_pasajeros"),
+                rs.getInt("capacidad_pasajeros"),
                 rs.getString("aeropuerto_origen"),
                 rs.getString("origen_iata"),
                 rs.getString("ciudad_origen"),
