@@ -6,13 +6,31 @@ public class Personal {
     private String apellidos;
     private String dni;
     private String correo;
+    private String telefono;
     private String contrasenaHash;
     private String turno;
     private int idAeropuerto;
 
     private Rol rol;
 
-    // Constructor
+    // Constructor CRUD
+    public Personal(int idPersonal, String nombres, String apellidos, String dni,
+                    String correo, String contrasenaHash, String telefono,
+                    String turno, int idAeropuerto, Rol rol) {
+
+        this.idPersonal = idPersonal;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.correo = correo;
+        this.contrasenaHash = contrasenaHash;
+        this.telefono = telefono;
+        this.turno = turno;
+        this.idAeropuerto = idAeropuerto;
+        this.rol = rol;
+    }
+
+    //Constructor LOgin
     public Personal(int idPersonal, String nombres, String apellidos, String correo, String contrasenaHash, Rol rol) {
         this.idPersonal = idPersonal;
         this.nombres = nombres;
@@ -22,8 +40,8 @@ public class Personal {
         this.rol = rol;
     }
 
-
     // Getters and Setters
+
     public int getIdPersonal() {
         return idPersonal;
     }
@@ -64,6 +82,14 @@ public class Personal {
         this.correo = correo;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public String getContrasenaHash() {
         return contrasenaHash;
     }
@@ -88,6 +114,7 @@ public class Personal {
         this.idAeropuerto = idAeropuerto;
     }
 
+    // --- ¡Getters y Setters para Rol! ---
     public Rol getRol() {
         return rol;
     }
@@ -96,3 +123,4 @@ public class Personal {
         this.rol = rol;
     }
 }
+

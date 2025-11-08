@@ -1,5 +1,7 @@
 package com.zephyr.domain;
 
+import java.util.Objects;
+
 public class Rol {
     private int idRol;
     private String nombreRol;
@@ -40,4 +42,18 @@ public class Rol {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rol rol = (Rol) o;
+        return idRol == rol.idRol;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRol);
+    }
+
 }

@@ -1,0 +1,12 @@
+.details-pane .label {
+    -fx-font-weight: bold;
+}
+
+.details-pane .text-field,
+.details-pane .password-field,
+.details-pane .combo-box {
+    -fx-pref-width: 100%;
+    -fx-border-color: -border-color;
+    -fx-background-color: #f9f9f9;
+    -fx-border-radius: 5px;
+}

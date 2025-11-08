@@ -1,6 +1,7 @@
 package com.zephyr.main;
 
 import com.zephyr.domain.Personal;
+import com.zephyr.domain.Rol;
 import com.zephyr.repository.PersonalRepository;
 import com.zephyr.repository.impl.PersonalRepositoryImpl;
 import com.zephyr.service.AuthService;
@@ -129,7 +130,21 @@ public class ConsoleApp {
         System.out.print("Contraseña temporal: ");
         String pass = scanner.nextLine();
 
-        personalService.registrarNuevoAgente(nombres, apellidos, correo, pass);
+        Rol rolAgente = new Rol(3, "Agente de puerta", "Rol de Agente");
+        Personal nuevoAgente = new Personal(
+                0,
+                nombres,
+                apellidos,
+                null,
+                correo,
+                pass,                   //TODO: Los que estan en null es porque no pido esos datos para consola
+                null,
+                "Mañana",
+                1,
+                rolAgente
+        );
+
+        personalService.registrarPersonal(nuevoAgente);
         System.out.println("\n¡Agente " + nombres + " registrado exitosamente!");
     }
 
@@ -139,12 +154,24 @@ public class ConsoleApp {
         System.out.print("Ingrese el ID del agente a actualizar: ");
         int id = Integer.parseInt(scanner.nextLine());
 
+        Optional<Personal> personalOptional = personalService.findById(id);
+
+        if (personalOptional.isEmpty()) {
+            System.out.println("ERROR: No se encontró ningún agente con el ID: " + id);
+            return;
+        }
+
+        Personal personalParaActualizar = personalOptional.get();
+        System.out.println("Actualizando a: " + personalParaActualizar.getNombres() + " " + personalParaActualizar.getApellidos());
         System.out.print("Ingrese el nuevo correo: ");
         String nuevoCorreo = scanner.nextLine();
         System.out.print("Ingrese el nuevo turno (Mañana/Tarde/Noche): ");
         String nuevoTurno = scanner.nextLine();
 
-        personalService.actualizarInformacionAgente(id, nuevoCorreo, nuevoTurno);
+        personalParaActualizar.setCorreo(nuevoCorreo);
+        personalParaActualizar.setTurno(nuevoTurno);
+
+        personalService.actualizarPersonal(personalParaActualizar);
         System.out.println("\n¡Agente actualizado!");
     }
 

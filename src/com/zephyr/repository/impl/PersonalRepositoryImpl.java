@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class PersonalRepositoryImpl implements PersonalRepository {
 
-    // Esta version es simulada,, no usara la base de datos dee postgre, usara un arraylist
+    //TODO:Esta version es simulada,, no usara la base de datos dee postgre, usara un arraylist
 
     private List<Personal> baseDeDatosSimulada;
     private int idCounter = 0;
