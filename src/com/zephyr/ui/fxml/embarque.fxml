@@ -1,14 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.zephyr.ui.controller.EmbarqueController"
-            prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.Button?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.zephyr.ui.controller.EmbarqueController"
+      alignment="TOP_CENTER" spacing="15.0" styleClass="main-content-vbox">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+        <URL value="@../css/embarque-styles.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <children>
+        <Label text="Módulo de Embarque" styleClass="dashboard-title" />
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Seleccionar Vuelo Asignado:">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="vueloComboBox" prefWidth="350.0"
+                          promptText="Seleccione un vuelo..." />
+            </children>
+        </HBox>
+
+        <HBox alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-padding: 10px 0;">
+            <children>
+                <VBox>
+                    <Label text="Escanear Código de Boleto:"/>
+                    <TextField fx:id="boletoField" prefHeight="40.0" prefWidth="300.0"
+                               promptText="Ej: AXD456" />
+                </VBox>
+                <Button fx:id="verificarButton" mnemonicParsing="false" prefHeight="40.0"
+                        text="Verificar Boleto" styleClass="action-button-success" />
+            </children>
+        </HBox>
+
+        <Label text="Manifiesto de Pasajeros" styleClass="dashboard-subtitle" />
+        <TableView fx:id="tablaPasajeros" prefHeight="400.0" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colNombre" prefWidth="250.0" text="Pasajero" />
+                <TableColumn fx:id="colAsiento" prefWidth="100.0" text="Asiento" />
+                <TableColumn fx:id="colEstado" prefWidth="200.0" text="Estado" />
+            </columns>
+        </TableView>
+
+        <Label fx:id="contadorLabel" text="Pasajeros Abordo: 0 / 0"
+               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px 0;" />
+
+    </children>
+</VBox>

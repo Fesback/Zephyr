@@ -1,5 +1,6 @@
 package com.zephyr.ui.controller;
 
+import com.sun.javafx.fxml.FXMLLoaderHelper;
 import com.zephyr.domain.Personal;
 import com.zephyr.domain.Vuelo;
 import com.zephyr.repository.VueloRepository;
@@ -9,12 +10,17 @@ import com.zephyr.service.impl.VueloServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +31,8 @@ public class DashboardController implements Initializable {
     private Personal usuarioLogueado;
 
     private Vuelo vueloSeleccionado;
+
+    @FXML private BorderPane rootPane;
 
     @FXML private Button btnDashboard, btnGestionVuelos, btnEmbarque,btnGestionPersonal, btnReportes, btnConfiguracion;
 
@@ -46,8 +54,13 @@ public class DashboardController implements Initializable {
     @FXML private Button btnRetrasarVuelo;
     @FXML private Button btnAsignarPuerta;
 
+
     private final VueloService vueloService;
     private ObservableList<Vuelo> listaDeVuelosObservable;
+
+    //nodos
+    private Node dashboardCenterNode;
+    private Node dashboardRightNode;
 
     public DashboardController() {
         VueloRepository vueloRepository = new VueloRepositoryJDBCImpl();
@@ -82,6 +95,33 @@ public class DashboardController implements Initializable {
 
         btnIniciarEmbarque.setOnAction(event -> handleActualizarEstado(2, "Embarcando"));
         btnRetrasarVuelo.setOnAction(event -> handleActualizarEstado(5,"Retrasado"));
+
+
+        // guardar panel original del dash
+        this.dashboardCenterNode = rootPane.getCenter();
+        this.dashboardRightNode = rootPane.getRight();
+
+        btnDashboard.setOnAction(event -> {
+            rootPane.setCenter(this.dashboardCenterNode);
+            rootPane.setRight(this.dashboardRightNode);
+        });
+
+        btnEmbarque.setOnAction(event -> {
+           cargarVistaEnCentro("/com/zephyr/ui/fxml/embarque.fxml");
+        });
+    }
+
+    private void cargarVistaEnCentro(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent vista = loader.load();
+
+            rootPane.setCenter(vista);
+            rootPane.setRight(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de navegacion" , "No se pudo cargar la vista: " + fxmlPath);
+        }
     }
 
     private void mostrarDetallesVuelo(Vuelo vuelo) {
