@@ -12,12 +12,18 @@ import com.zephyr.service.impl.PersonalServiceImpl;
 import com.zephyr.service.impl.RolServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,12 +42,14 @@ public class PersonalController implements Initializable {
     @FXML private ComboBox<String> comboTurno;
     @FXML private PasswordField txtContrasena;
     @FXML private ComboBox<Rol> comboRol;
+    @FXML private Button btnNuevoAgente;
     @FXML private Button btnGuardar, btnEliminar, btnLimpiar;
 
     private final PersonalService personalService;
     private final RolService rolService;
     private ObservableList<Personal> listaPersonalObservable;
     private ObservableList<Rol> listaRolesObservable;
+    private ObservableList<String> listaTurnosObservable;
     private Personal personalSeleccionado;
 
     public PersonalController() {
@@ -53,23 +61,24 @@ public class PersonalController implements Initializable {
 
         this.listaPersonalObservable = FXCollections.observableArrayList();
         this.listaRolesObservable = FXCollections.observableArrayList();
+        this.listaTurnosObservable = FXCollections.observableArrayList("Mañana", "Tarde", "Noche");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurarTabla();
         configurarComboBoxRol();
+        configurarComboBoxTurno();
 
         tablaPersonal.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> seleccionarPersonal(newVal));
 
-        comboTurno.setItems(FXCollections.observableArrayList("Mañana", "Tarde", "Noche"));
+        btnNuevoAgente.setOnAction(e -> abrirPopupRegistro());
         btnGuardar.setOnAction(event -> handleGuardar());
         btnEliminar.setOnAction(event -> handleEliminar());
         btnLimpiar.setOnAction(event -> limpiarFormulario());
 
         cargarPersonal();
         cargarRoles();
-
         limpiarFormulario();
     }
 
@@ -94,15 +103,13 @@ public class PersonalController implements Initializable {
     private void configurarComboBoxRol() {
         comboRol.setItems(listaRolesObservable);
         comboRol.setConverter(new StringConverter<Rol>() {
-            @Override
-            public String toString(Rol rol) {
-                return (rol == null) ? null : rol.getNombreRol();
-            }
-            @Override
-            public Rol fromString(String string) {
-                return null;
-            }
+            @Override public String toString(Rol rol) { return (rol == null) ? null : rol.getNombreRol(); }
+            @Override public Rol fromString(String string) { return null; }
         });
+    }
+
+    private void configurarComboBoxTurno() {
+        comboTurno.setItems(listaTurnosObservable);
     }
 
     private void cargarPersonal() {
@@ -117,35 +124,45 @@ public class PersonalController implements Initializable {
         listaRolesObservable.addAll(roles);
     }
 
-    private void handleGuardar() {
-        String nombres = txtNombres.getText();
-        String apellidos = txtApellidos.getText();
-        String dni = txtDni.getText();
-        String correo = txtCorreo.getText();
-        String contrasena = txtContrasena.getText();
-        String telefono = txtTelefono.getText();
-        String turno = comboTurno.getValue();
-        int idAeropuerto = Integer.parseInt(txtIdAeropuerto.getText());
-        Rol rol = comboRol.getValue();
+    //popup
+    private void abrirPopupRegistro() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zephyr/ui/fxml/registrar-personal.fxml"));
+            Parent root = loader.load();
 
-        if (personalSeleccionado == null) {
-            Personal nuevo = new Personal(0, nombres, apellidos, dni, correo, contrasena, telefono, turno, idAeropuerto, rol);
-            personalService.registrarPersonal(nuevo);
+            RegistrarPersonalController popupController = loader.getController();
+            popupController.setControladorPadre(this);
 
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Exito", "Nuevo agente registrado");
-        } else {
-            personalSeleccionado.setNombres(nombres);
-            personalSeleccionado.setApellidos(apellidos);
-            personalSeleccionado.setDni(dni);
-            personalSeleccionado.setCorreo(correo);
-            personalSeleccionado.setTelefono(telefono);
-            personalSeleccionado.setTurno(turno);
-            personalSeleccionado.setIdAeropuerto(idAeropuerto);
-            personalSeleccionado.setRol(rol);
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Registrar Nuevo Agente");
+            popupStage.setScene(new Scene(root, 500, 650));
+            popupStage.setResizable(false);
+            popupStage.showAndWait();
 
-            personalService.actualizarPersonal(personalSeleccionado);
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Exito" , "Agente actualizado correctamente");
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo abrir el formulario de registro.");
         }
+    }
+
+    private void handleGuardar() {
+        if (personalSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Lógica", "No hay ningún agente seleccionado. Use el botón '+ Nuevo Agente' para crear uno.");
+            return;
+        }
+
+        personalSeleccionado.setNombres(txtNombres.getText());
+        personalSeleccionado.setApellidos(txtApellidos.getText());
+        personalSeleccionado.setDni(txtDni.getText());
+        personalSeleccionado.setCorreo(txtCorreo.getText());
+        personalSeleccionado.setTelefono(txtTelefono.getText());
+        personalSeleccionado.setTurno(comboTurno.getValue());
+        personalSeleccionado.setIdAeropuerto(Integer.parseInt(txtIdAeropuerto.getText()));
+        personalSeleccionado.setRol(comboRol.getValue());
+
+        personalService.actualizarPersonal(personalSeleccionado);
+        mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito" , "Agente actualizado correctamente");
 
         cargarPersonal();
         limpiarFormulario();
@@ -178,7 +195,10 @@ public class PersonalController implements Initializable {
             txtIdAeropuerto.setText(String.valueOf(personal.getIdAeropuerto()));
             comboRol.setValue(personal.getRol());
 
+            btnGuardar.setDisable(false);
             btnEliminar.setDisable(false);
+            btnLimpiar.setDisable(false);
+
         } else {
             limpiarFormulario();
         }
@@ -186,21 +206,28 @@ public class PersonalController implements Initializable {
 
     private void limpiarFormulario() {
         this.personalSeleccionado = null;
-        labelTituloFormulario.setText("Registrar un nuevo Agente");
+        labelTituloFormulario.setText("Seleccione un Agente");
 
         txtNombres.clear();
         txtApellidos.clear();
         txtDni.clear();
         txtCorreo.clear();
         txtContrasena.clear();
-        txtContrasena.setDisable(false);
+        txtContrasena.setDisable(true);
         txtTelefono.clear();
         comboTurno.setValue(null);
         txtIdAeropuerto.clear();
         comboRol.setValue(null);
 
+        btnGuardar.setDisable(true);
         btnEliminar.setDisable(true);
+        btnLimpiar.setDisable(true);
         tablaPersonal.getSelectionModel().clearSelection();
+    }
+
+    public void refrescarTablaPersonal() {
+        System.out.println("PersonalController: refrescando la tabla de personal...");
+        cargarPersonal();
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String contenido) {

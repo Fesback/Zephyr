@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+<?import javafx.scene.control.PasswordField?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.zephyr.ui.controller.RegistrarPersonalController"
+      styleClass="main-content-vbox" spacing="15.0">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+        <URL value="@../css/registrar-personal.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets top="20.0" left="20.0" right="20.0" bottom="20.0" />
+    </padding>
+
+    <children>
+        <Label text="Registrar Nuevo Agente" styleClass="dashboard-title" />
+
+        <GridPane styleClass="grid-pane" vgap="10.0">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <Label text="Nombres:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <TextField fx:id="txtNombres" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+            <Label text="Apellidos:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <TextField fx:id="txtApellidos" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+            <Label text="DNI:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <TextField fx:id="txtDni" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+            <Label text="Correo:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <TextField fx:id="txtCorreo" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+            <Label text="Contraseña:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+            <PasswordField fx:id="txtContrasena" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+            <Label text="Teléfono:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+            <TextField fx:id="txtTelefono" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+            <Label text="Turno:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+            <ComboBox fx:id="comboTurno" prefWidth="Infinity" promptText="Seleccione un turno..." GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+            <Label text="Aeropuerto ID:" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+            <TextField fx:id="txtIdAeropuerto" text="1" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+
+            <Label text="Rol:" GridPane.rowIndex="8" GridPane.columnIndex="0" />
+            <ComboBox fx:id="comboRol" prefWidth="Infinity" promptText="Seleccione un rol..." GridPane.rowIndex="8" GridPane.columnIndex="1" />
+
+        </GridPane>
+
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-padding: 20px 0 0 0;">
+            <children>
+                <Button fx:id="btnCancelar" text="Cancelar" styleClass="action-button-secondary" />
+                <Button fx:id="btnGuardarNuevo" text="Guardar Nuevo Agente" styleClass="action-button-success" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

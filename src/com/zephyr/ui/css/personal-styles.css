@@ -10,3 +10,20 @@
     -fx-background-color: #f9f9f9;
     -fx-border-radius: 5px;
 }
+
+
+.combo-box .list-cell{
+    -fx-text-fill: -text-color-primary;
+}
+
+.combo-box .combo-box-popup .list-cell{
+    -fx-text-fill: -text-color-primary;
+}
+
+.combo-box .cell{
+    -fx-text-fill: -text-color-primary;
+}
+
+.combo-box .list-cell:hover{
+    -fx-background-color: #f0f0f0;
+}

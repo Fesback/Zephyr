@@ -20,9 +20,9 @@
             fx:controller="com.zephyr.ui.controller.PersonalController"
             styleClass="main-content-vbox">
     <stylesheets>
-    <URL value="@../css/dashboard-styles.css" />
-    <URL value="@../css/personal-styles.css" />
-</stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+        <URL value="@../css/personal-styles.css" />
+    </stylesheets>
 
     <center>
         <VBox spacing="15.0" BorderPane.alignment="CENTER">
@@ -31,6 +31,13 @@
             </padding>
             <children>
                 <Label text="Gestión de Personal del Sistema" styleClass="dashboard-title" />
+
+                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 0 0 10px 0;">
+                    <children>
+                        <Button fx:id="btnNuevoAgente" text="+ Registrar Nuevo Agente"
+                                styleClass="action-button-success" />
+                    </children>
+                </HBox>
 
                 <TableView fx:id="tablaPersonal" VBox.vgrow="ALWAYS">
                     <columns>
@@ -48,7 +55,7 @@
     <right>
         <VBox fx:id="panelFormulario" prefWidth="350.0" styleClass="details-pane" spacing="10">
             <children>
-                <Label fx:id="labelTituloFormulario" text="Registrar Nuevo Agente" styleClass="dashboard-subtitle" />
+                <Label fx:id="labelTituloFormulario" text="Detalles del Agente" styleClass="dashboard-subtitle" />
 
                 <GridPane vgap="10.0">
                     <columnConstraints>
@@ -75,7 +82,7 @@
                     <TextField fx:id="txtTelefono" GridPane.rowIndex="5" GridPane.columnIndex="1" />
 
                     <Label text="Turno:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
-                    <ComboBox fx:id="comboTurno" promptText="Mañana, Tarde, Noche" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                    <ComboBox fx:id="comboTurno" prefWidth="Infinity" promptText="Seleccione un turno..." GridPane.rowIndex="6" GridPane.columnIndex="1" />
 
                     <Label text="Aeropuerto ID:" GridPane.rowIndex="7" GridPane.columnIndex="0" />
                     <TextField fx:id="txtIdAeropuerto" promptText="Ej: 1 (para JFK)" GridPane.rowIndex="7" GridPane.columnIndex="1" />
@@ -87,7 +94,7 @@
 
                 <HBox spacing="10.0" style="-fx-padding: 20px 0 0 0;">
                     <children>
-                        <Button fx:id="btnGuardar" text="Guardar" styleClass="action-button-success" />
+                        <Button fx:id="btnGuardar" text="Actualizar" styleClass="action-button-success" />
                         <Button fx:id="btnEliminar" text="Eliminar" styleClass="action-button-danger" />
                         <Button fx:id="btnLimpiar" text="Limpiar" styleClass="action-button-secondary" />
                     </children>
