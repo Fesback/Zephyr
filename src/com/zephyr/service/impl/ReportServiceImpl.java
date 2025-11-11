@@ -1,9 +1,20 @@
 package com.zephyr.service.impl;
 
+import com.itextpdf.barcodes.Barcode128;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.DashedBorder;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.layout.properties.VerticalAlignment;
 import com.zephyr.domain.Boleto;
 import com.zephyr.domain.Pasajero;
 import com.zephyr.domain.Vuelo;
@@ -16,7 +27,8 @@ import com.zephyr.repository.impl.VueloRepositoryJDBCImpl;
 import com.zephyr.service.ReportService;
 import com.itextpdf.layout.properties.TextAlignment;
 
-import java.io.FileNotFoundException;
+import java.awt.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
@@ -25,6 +37,11 @@ public class ReportServiceImpl implements ReportService {
     private final BoletoRepository boletoRepository;
     private final VueloRepository vueloRepository;
     private final PasajeroRepository pasajeroRepository;
+
+    //colores
+    private static final Color COLOR_PRIMARIO = new DeviceRgb(0, 82, 204);
+    private static final Color COLOR_TEXTO_BLANCO = new DeviceRgb(255, 255, 255);
+    private static final Color COLOR_TEXTO_GRIS = new DeviceRgb(138, 138, 138);
 
     public ReportServiceImpl() {
         this.boletoRepository = new BoletoRepositoryJDBCImpl();
@@ -62,55 +79,132 @@ public class ReportServiceImpl implements ReportService {
         String userHome = System.getProperty("user.home");
         String filePath = userHome + "/Downloads/BoardingPass_" + boleto.getCodigoBoleto() + ".pdf";
 
+        PageSize boardingPassSize = new PageSize(595, 283);
+
         try {
             PdfWriter writer = new PdfWriter(filePath);
             PdfDocument pdf = new PdfDocument(writer);
+            pdf.setDefaultPageSize(boardingPassSize);
+
             Document document = new Document(pdf);
+            document.setMargins(10, 10, 10, 10);
 
-            document.add(new Paragraph("TARJETA DE EMBARQUE - ZEPHYR")
-                    .setBold()
-                    .setFontSize(20)
-                    .setTextAlignment(TextAlignment.CENTER));
+            // --- 3. DIBUJAR EL PDF CON TABLAS ---
 
-            document.add(new Paragraph("Pasajero: " + pasajero.getNombres() + " " +  pasajero.getApellidos())
-                    .setFontSize(14));
+            Table tablaPrincipal = new Table(UnitValue.createPercentArray(new float[]{75f, 25f}))
+                    .useAllAvailableWidth();
+            tablaPrincipal.setBorder(Border.NO_BORDER);
 
-            document.add(new Paragraph(vuelo.getOrigenIata() + " --> " + vuelo.getDestinoIata())
-                    .setBold()
-                    .setFontSize(18)
-                    .setTextAlignment(TextAlignment.CENTER)
-                    .setMarginTop(20));
+            Cell celdaIzquierda = new Cell();
+            celdaIzquierda.setBorder(Border.NO_BORDER);
+            celdaIzquierda.setPadding(10);
+            Table tablaHeader = new Table(UnitValue.createPercentArray(new float[]{50f, 50f}))
+                    .useAllAvailableWidth()
+                    .setBackgroundColor(COLOR_PRIMARIO);
 
-            document.add(new Paragraph("Código de Boleto: " + boleto.getCodigoBoleto())
-                    .setFontSize(12)
-                    .setItalic());
+            Paragraph titulo = new Paragraph("BOARDING PASS")
+                    .setFontColor(COLOR_TEXTO_BLANCO).setBold().setFontSize(14);
+            Paragraph aerolinea = new Paragraph(vuelo.getAerolinea())
+                    .setFontColor(COLOR_TEXTO_BLANCO).setFontSize(12).setTextAlignment(TextAlignment.RIGHT);
 
-            document.add(new Paragraph("Vuelo: " + vuelo.getCodigoVuelo() + " (" + vuelo.getAerolinea() + ")")
-                    .setFontSize(14));
+            tablaHeader.addCell(crearCeldaSimple(titulo, Border.NO_BORDER));
+            tablaHeader.addCell(crearCeldaSimple(aerolinea, Border.NO_BORDER));
+            celdaIzquierda.add(tablaHeader);
 
-            document.add(new Paragraph("Asiento: " + boleto.getAsiento())
-                    .setFontSize(16)
-                    .setBold());
+            Table tablaVuelo = new Table(UnitValue.createPercentArray(new float[]{40f, 20f, 40f}))
+                    .useAllAvailableWidth().setMarginTop(15);
 
-            document.add(new Paragraph("Puerta: " + (vuelo.getCodigoPuerta() != null ? vuelo.getCodigoPuerta() : "Pendiente"))
-                    .setFontSize(14));
+            tablaVuelo.addCell(crearCeldaSimple(
+                    new Paragraph(vuelo.getOrigenIata()).setBold().setFontSize(36), Border.NO_BORDER));
+            tablaVuelo.addCell(crearCeldaSimple(
+                    new Paragraph("✈").setFontSize(24).setTextAlignment(TextAlignment.CENTER), Border.NO_BORDER)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE));
+            tablaVuelo.addCell(crearCeldaSimple(
+                    new Paragraph(vuelo.getDestinoIata()).setBold().setFontSize(36).setTextAlignment(TextAlignment.RIGHT), Border.NO_BORDER));
 
-            document.add(new Paragraph("Hora de Salida: " + vuelo.getFechaSalida().toString())
-                    .setFontSize(12));
+            celdaIzquierda.add(tablaVuelo);
 
+            Table tablaDetalles = new Table(UnitValue.createPercentArray(new float[]{30f, 20f, 20f, 30f}))
+                    .useAllAvailableWidth().setMarginTop(15);
+
+            tablaDetalles.addCell(crearCeldaDetalle("PASAJERO", pasajero.getNombres() + " " + pasajero.getApellidos()));
+            tablaDetalles.addCell(crearCeldaDetalle("VUELO", vuelo.getCodigoVuelo()));
+            tablaDetalles.addCell(crearCeldaDetalle("PUERTA", vuelo.getCodigoPuerta() != null ? vuelo.getCodigoPuerta() : "---"));
+            tablaDetalles.addCell(crearCeldaDetalle("ASIENTO", boleto.getAsiento()));
+
+            celdaIzquierda.add(tablaDetalles);
+
+            Barcode128 barcode = new Barcode128(pdf);
+            barcode.setCode(boleto.getCodigoBoleto()); // ¡El código real!
+            Image barcodeImage = new Image(barcode.createFormXObject(pdf));
+            barcodeImage.setWidth(UnitValue.createPercentValue(100));
+            barcodeImage.setHeight(40f);
+
+            celdaIzquierda.add(barcodeImage.setMarginTop(10));
+
+            Cell celdaDerecha = new Cell();
+            celdaDerecha.setBorderLeft(new DashedBorder(COLOR_TEXTO_GRIS, 1f));
+            celdaDerecha.setBorderRight(Border.NO_BORDER);
+            celdaDerecha.setBorderTop(Border.NO_BORDER);
+            celdaDerecha.setBorderBottom(Border.NO_BORDER);
+            celdaDerecha.setPadding(10);
+
+            Table tablaHeaderTalon = new Table(UnitValue.createPercentArray(new float[]{100f}))
+                    .useAllAvailableWidth().setBackgroundColor(COLOR_PRIMARIO);
+            tablaHeaderTalon.addCell(crearCeldaSimple(
+                    new Paragraph(vuelo.getAerolinea()).setFontColor(COLOR_TEXTO_BLANCO).setFontSize(10), Border.NO_BORDER));
+            celdaDerecha.add(tablaHeaderTalon);
+
+            celdaDerecha.add(crearCeldaDetalle("VUELO", vuelo.getCodigoVuelo()));
+            celdaDerecha.add(crearCeldaDetalle("ASIENTO", boleto.getAsiento()));
+            celdaDerecha.add(crearCeldaDetalle("PASAJERO", pasajero.getNombres()));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy HH:mm");
+            celdaDerecha.add(crearCeldaDetalle("FECHA/HORA", vuelo.getFechaSalida().format(formatter)));
+
+            celdaDerecha.add(barcodeImage.setMarginTop(10));
+
+
+            tablaPrincipal.addCell(celdaIzquierda);
+            tablaPrincipal.addCell(celdaDerecha);
+
+            document.add(tablaPrincipal);
             document.close();
 
-            System.out.println("PDF generado exitosamente en: " + filePath);
+            System.out.println("PDF Profesional generado exitosamente en: " + filePath);
             return filePath;
 
-        } catch (FileNotFoundException e) {
-            System.err.println("Error al crear el PDF (archivo no encontrado): " + e.getMessage());
-            e.printStackTrace();
-            return null;
         } catch (Exception e) {
-            System.err.println("Error al generar el PDF: " + e.getMessage());
+            System.err.println("Error al generar el PDF profesional: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
+    }
+
+    private Cell crearCeldaSimple(Paragraph p, Border border) {
+        Cell cell = new Cell().add(p);
+        cell.setBorder(border);
+        return cell;
+    }
+
+
+    private Cell crearCeldaDetalle(String titulo, String valor) {
+        Cell cell = new Cell();
+        cell.setBorder(Border.NO_BORDER);
+        cell.setPadding(0).setMarginTop(10);
+
+        Paragraph pTitulo = new Paragraph(titulo)
+                .setFontColor(COLOR_TEXTO_GRIS)
+                .setFontSize(8)
+                .setBold();
+
+        Paragraph pValor = new Paragraph(valor)
+                .setFontColor(new DeviceRgb(0, 0, 0)) // Negro
+                .setFontSize(12)
+                .setBold();
+
+        cell.add(pTitulo);
+        cell.add(pValor);
+        return cell;
     }
 }
