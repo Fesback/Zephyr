@@ -25,20 +25,22 @@
 
     <children>
         <Label text="Módulo de Reportes" styleClass="dashboard-title" />
+        <Label text="Generar y Enviar Tarjeta de Embarque" styleClass="dashboard-subtitle" />
 
-        <Label text="Generar Tarjeta de Embarque (PDF)" styleClass="dashboard-subtitle" />
-
-        <HBox alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-padding: 10px 0;">
+        <VBox spacing="10.0" style="-fx-padding: 10px 0;">
             <children>
-                <VBox>
-                    <Label text="Buscar por Código de Boleto:"/>
-                    <TextField fx:id="boletoField" prefHeight="40.0" prefWidth="300.0"
-                               promptText="Ej: AXD456" styleClass="search-field"/>
-                </VBox>
-                <Button fx:id="btnGenerarPdf" mnemonicParsing="false" prefHeight="40.0"
-                        text="Generar PDF" styleClass="action-button-success" />
+                <Label text="Buscar por Código de Boleto:"/>
+                <TextField fx:id="boletoField" prefHeight="40.0" maxWidth="300.0"
+                           promptText="Ej: AXD456" styleClass="search-field"/>
+
+                <Label text="Email del Destinatario:"/>
+                <TextField fx:id="emailField" prefHeight="40.0" maxWidth="300.0"
+                           promptText="pasajero@email.com" styleClass="search-field"/>
             </children>
-        </HBox>
+        </VBox>
+
+        <Button fx:id="btnGenerarEnviar" mnemonicParsing="false" prefHeight="40.0"
+                text="Generar y Enviar PDF" styleClass="action-button-success" />
 
     </children>
 </VBox>

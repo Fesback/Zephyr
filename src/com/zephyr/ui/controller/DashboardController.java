@@ -101,6 +101,7 @@ public class DashboardController implements Initializable {
         this.dashboardCenterNode = rootPane.getCenter();
         this.dashboardRightNode = rootPane.getRight();
 
+        // botones
         btnDashboard.setOnAction(event -> {
             rootPane.setCenter(this.dashboardCenterNode);
             rootPane.setRight(this.dashboardRightNode);
@@ -112,6 +113,10 @@ public class DashboardController implements Initializable {
 
         btnGestionPersonal.setOnAction(event -> {
             cargarVistaEnCentro("/com/zephyr/ui/fxml/personal.fxml");
+        });
+
+        btnReportes.setOnAction(event -> {
+            cargarVistaEnCentro("/com/zephyr/ui/fxml/reportes.fxml");
         });
     }
 
