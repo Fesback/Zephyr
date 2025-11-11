@@ -1,5 +1,6 @@
 package com.zephyr.repository.impl;
 
+import com.itextpdf.kernel.pdf.DestinationResolverCopyFilter;
 import com.zephyr.domain.Vuelo;
 import com.zephyr.repository.VueloRepository;
 import com.zephyr.util.DatabaseConnector;
@@ -44,7 +45,19 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
 
     @Override
     public Optional<Vuelo> findVueloDetalladoById(int idVuelo) {
-        System.err.println("findVueloDetalladoById() no implementado");
+        String sql = "SELECT * FROM v_vuelos_programados WHERE id_vuelo = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,idVuelo);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapResultSetToVuelo(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar vuelo detallado por ID: ");
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 

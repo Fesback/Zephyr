@@ -79,6 +79,24 @@ public class BoletoRepositoryJDBCImpl implements BoletoRepository {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<Boleto> findById(int idBoleto) {
+        String sql = "SELECT * FROM Boleto WHERE id_boleto = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idBoleto);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapResultSetToBoleto(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar boleto por codigo: ");
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     private PasajeroPorVuelo mapResultSetToPasajeroPorVuelo(ResultSet rs) throws SQLException {
         return  new PasajeroPorVuelo(
                 rs.getInt("id_vuelo"),
@@ -99,7 +117,7 @@ public class BoletoRepositoryJDBCImpl implements BoletoRepository {
         return  new Boleto(
                 rs.getInt("id_Boleto"),
                 rs.getString("codigo_boleto"),
-                rs.getTimestamp("fecha_emsiion").toLocalDateTime(),
+                rs.getTimestamp("fecha_emision").toLocalDateTime(),
                 rs.getString("asiento"),
                 rs.getBigDecimal("precio_total"),
                 rs.getInt("id_pasajero"),

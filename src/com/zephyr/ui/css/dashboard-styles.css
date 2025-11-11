@@ -1,8 +1,7 @@
-/* Paleta de Colores (Tu paleta Blanco y Negro) */
 .root {
     -primary-dark: #000000;
     -secondary-dark: #1a1a1a;
-    -light-background: #ffffff; /* Fondo principal blanco */
+    -light-background: #ffffff;
     -card-background: #ffffff;
     -border-color: #e0e0e0;
     -text-color-primary: #000000;
@@ -12,9 +11,7 @@
     -font-family: "Segoe UI", sans-serif;
 }
 
-/* ============================== */
-/* ESTILO GLOBAL                  */
-/* ============================== */
+
 .label {
     -fx-font-family: -font-family;
     -fx-text-fill: -text-color-primary;
@@ -25,28 +22,22 @@
     -fx-cursor: hand;
 }
 
-/* ============================== */
-/* BORDERPANE RAIZ (Fondo de toda la ventana) */
-/* ============================== */
-/* Usamos tu fondo blanco */
+
 .border-pane-root {
     -fx-background-color: -light-background;
 }
 
-/* ============================== */
-/* MENÚ LATERAL (Tu diseño)     */
-/* ============================== */
 .side-menu {
-    -fx-background-color: -card-background; /* Fondo blanco */
+    -fx-background-color: -card-background;
     -fx-padding: 20px 0;
     -fx-spacing: 15px;
     -fx-alignment: top-center;
     -fx-border-color: -border-color;
-    -fx-border-width: 0 1px 0 0; /* Borde derecho */
+    -fx-border-width: 0 1px 0 0;
 }
 
 .sidebar-title {
-    -fx-text-fill: -accent-color; /* Negro */
+    -fx-text-fill: -accent-color;
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-padding: 0 0 30px 0;
@@ -65,13 +56,11 @@
     -fx-border-width: 1px;
 }
 
-/* Tu hover negro */
 .menu-button:hover {
     -fx-background-color: -hover-color;
     -fx-text-fill: #ffffff;
 }
 
-/* Tu botón activo negro */
 .menu-button:focused,
 .menu-button-active {
     -fx-background-color: -accent-color;
@@ -114,11 +103,8 @@
     -fx-text-fill: #ffffff;
 }
 
-/* ============================== */
-/* BARRA SUPERIOR (Tu diseño)     */
-/* ============================== */
 .top-bar {
-    -fx-background-color: -card-background; /* Blanco */
+    -fx-background-color: -card-background;
     -fx-padding: 10px 20px;
     -fx-border-color: -border-color;
     -fx-border-width: 0 0 1px 0;
@@ -131,11 +117,7 @@
     -fx-text-fill: -text-color-primary;
 }
 
-/* ============================== */
-/* CONTENIDO PRINCIPAL (ACTUALIZADO) */
-/* ============================== */
 
-/* El ScrollPane debe ser transparente */
 .scroll-pane {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -144,9 +126,8 @@
     -fx-background-color: transparent;
 }
 
-/* El VBox de contenido debe ser blanco */
 .main-content-vbox {
-    -fx-background-color: -light-background; /* Blanco */
+    -fx-background-color: -light-background;
     -fx-padding: 20px;
     -fx-spacing: 20px;
 }
@@ -166,12 +147,10 @@
 }
 
 
-/* ============================== */
-/* TARJETAS DE ESTADÍSTICAS (Adaptadas a tu tema) */
-/* ============================== */
+
 .stat-card {
     -fx-padding: 20px;
-    -fx-background-color: -card-background; /* Blanco */
+    -fx-background-color: -card-background;
     -fx-background-radius: 8px;
     -fx-border-radius: 8px;
     -fx-border-color: -border-color;
@@ -182,33 +161,29 @@
 
 .stat-title {
     -fx-font-size: 14px;
-    -fx-text-fill: -text-color-secondary; /* Tu gris secundario */
+    -fx-text-fill: -text-color-secondary;
     -fx-font-weight: normal;
 }
 
 .stat-value {
     -fx-font-size: 32px;
     -fx-font-weight: bold;
-    -fx-text-fill: -text-color-primary; /* Tu negro primario */
+    -fx-text-fill: -text-color-primary;
 }
 
-/* Dejamos los colores de "cambio" porque son universales */
 .stat-change-positive {
     -fx-font-size: 13px;
-    -fx-text-fill: #27AE60; /* Verde */
+    -fx-text-fill: #27AE60;
     -fx-font-weight: bold;
 }
 
 .stat-change-negative {
     -fx-font-size: 13px;
-    -fx-text-fill: #E74C3C; /* Rojo */
+    -fx-text-fill: #E74C3C;
     -fx-font-weight: bold;
 }
 
 
-/* ============================== */
-/* TABLEVIEW (Tu diseño)          */
-/* ============================== */
 .table-view {
     -fx-background-color: -card-background;
     -fx-border-color: -border-color;
@@ -273,10 +248,6 @@
     -fx-background-color: -text-color-secondary;
     -fx-background-radius: 5em;
 }
-
-/* ============================== */
-/* PANEL LATERAL DERECHO (DETALLES) */
-/* ============================== */
 
 .details-pane {
     -fx-background-color: -card-background;

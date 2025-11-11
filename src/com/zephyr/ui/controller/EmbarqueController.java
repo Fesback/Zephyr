@@ -7,8 +7,10 @@ import com.zephyr.repository.VueloRepository;
 import com.zephyr.repository.impl.BoletoRepositoryJDBCImpl;
 import com.zephyr.repository.impl.VueloRepositoryJDBCImpl;
 import com.zephyr.service.BoletoService;
+import com.zephyr.service.ReportService;
 import com.zephyr.service.VueloService;
 import com.zephyr.service.impl.BoletoServiceImpl;
+import com.zephyr.service.impl.ReportServiceImpl;
 import com.zephyr.service.impl.VueloServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,9 +35,13 @@ public class EmbarqueController implements Initializable {
     @FXML private Button verificarButton;
     @FXML private Label contadorLabel;
 
+    @FXML private Label labelManifiesto;
+    @FXML private Button btnGenerarPdf;
+
     //serivces
     private final VueloService vueloService;
     private final BoletoService boletoService;
+    private final ReportService  reportService;
 
     private ObservableList<Vuelo> listaVuelosObservable;
     private ObservableList<PasajeroPorVuelo> listaPasajerosObservable;
@@ -46,6 +52,8 @@ public class EmbarqueController implements Initializable {
 
         BoletoRepository boletoRepository = new BoletoRepositoryJDBCImpl();
         this.boletoService = new BoletoServiceImpl(boletoRepository);
+
+        this.reportService = new ReportServiceImpl();
 
         this.listaPasajerosObservable = FXCollections.observableArrayList();
         this.listaVuelosObservable = FXCollections.observableArrayList();
@@ -66,6 +74,12 @@ public class EmbarqueController implements Initializable {
 
         vueloComboBox.setOnAction(event -> handleSeleccionarVuelo());
         verificarButton.setOnAction(event -> handleVerificarBoleto());
+        btnGenerarPdf.setOnAction(event -> handleGenerarPdf());
+
+        tablaPasajeros.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            btnGenerarPdf.setDisable(newVal == null);
+        });
+
         cargarVuelosParaSeleccionar();
 
     }
@@ -79,8 +93,10 @@ public class EmbarqueController implements Initializable {
     private void handleSeleccionarVuelo() {
         Vuelo vueloSeleccionado = vueloComboBox.getSelectionModel().getSelectedItem();
         if (vueloSeleccionado != null) {
+            labelManifiesto.setText("Manifiesto de Pasajeros (Vuelo: " + vueloSeleccionado.getCodigoVuelo() + ")");
             cargarManifiesto(vueloSeleccionado.getIdVuelo());
         } else  {
+            labelManifiesto.setText("Manifiesto de Pasajeros");
             listaVuelosObservable.clear();
         }
     }
@@ -111,6 +127,24 @@ public class EmbarqueController implements Initializable {
             boletoField.clear();
         } else {
             mostrarAlerta(Alert.AlertType.ERROR, "Resultado", resultado);
+        }
+    }
+
+    private void handleGenerarPdf() {
+        PasajeroPorVuelo pasajeroSel = tablaPasajeros.getSelectionModel().getSelectedItem();
+
+        if (pasajeroSel == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Sin seleccion", "Por favor seleccione un pasajero d ela tabla");
+            return;
+        }
+
+        System.out.println("Generando PDF para el boleto ID: " + pasajeroSel.getIdBoleto());
+        String rutaArchivo = reportService.generarBoardingPass(pasajeroSel.getIdBoleto());
+
+        if (rutaArchivo != null) {
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Exito", "PDF generado exitosamente.\n\nGuardado en: " + rutaArchivo);
+        }  else {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo generar el PDF. Revisar consola");
         }
     }
 

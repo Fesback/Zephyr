@@ -9,7 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ikonli-fontawesome5-pack-12.4.0" level="project" />
     <orderEntry type="library" name="ikonli-javafx-12.4.0" level="project" />
-    <orderEntry type="library" name="postgresql-42.7.8" level="project" />
     <orderEntry type="library" name="javafx.base" level="project" />
     <orderEntry type="library" name="javafx.controls" level="project" />
     <orderEntry type="library" name="javafx.fxml" level="project" />
@@ -21,5 +20,11 @@
     <orderEntry type="library" name="jdk.jsobject" level="project" />
     <orderEntry type="library" name="jfx.incubator.input" level="project" />
     <orderEntry type="library" name="jfx.incubator.richtext" level="project" />
+    <orderEntry type="library" name="io-8.0.4" level="project" />
+    <orderEntry type="library" name="kernel-8.0.4" level="project" />
+    <orderEntry type="library" name="layout-8.0.4" level="project" />
+    <orderEntry type="library" name="commons-8.0.4" level="project" />
+    <orderEntry type="library" name="slf4j-api-2.0.13" level="project" />
+    <orderEntry type="library" name="postgresql-42.7.8" level="project" />
   </component>
 </module>

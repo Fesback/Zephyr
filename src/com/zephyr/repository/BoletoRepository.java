@@ -10,4 +10,5 @@ public interface BoletoRepository {
     List<PasajeroPorVuelo> findPasajerosByVueloId(int idVuelo);
     String verificarPasajeroEnPuerta(int idBoleto);
     Optional<Boleto> findBoletoByCodigo(String codigoBoleto);
+    Optional<Boleto> findById(int idBoleto);
 }
