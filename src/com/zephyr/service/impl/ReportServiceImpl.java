@@ -4,7 +4,7 @@ import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.element.Image;
 
-//fuentes
+//fuentes - no fue la mejor idea
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.io.font.constants.StandardFonts;
