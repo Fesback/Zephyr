@@ -1,6 +1,7 @@
 package com.zephyr.service.impl;
 
 import com.itextpdf.barcodes.Barcode128;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.element.Image;
 
 //fuentes
@@ -33,7 +34,7 @@ import com.zephyr.repository.impl.VueloRepositoryJDBCImpl;
 import com.zephyr.service.ReportService;
 import com.itextpdf.layout.properties.TextAlignment;
 
-import java.awt.*;
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -95,7 +96,6 @@ public class ReportServiceImpl implements ReportService {
             Document document = new Document(pdf);
             document.setMargins(10, 10, 10, 10);
 
-            PdfFont zapfDingbats = PdfFontFactory.createFont(StandardFonts.ZAPFDINGBATS);
 
             Table tablaPrincipal = new Table(UnitValue.createPercentArray(new float[]{75f, 25f}))
                     .useAllAvailableWidth();
@@ -127,13 +127,36 @@ public class ReportServiceImpl implements ReportService {
             tablaVuelo.addCell(crearCeldaSimple(
                     new Paragraph(vuelo.getOrigenIata()).setBold().setFontSize(36), Border.NO_BORDER));
 
-            //  simbolo
-            tablaVuelo.addCell(crearCeldaSimple(
-                    new Paragraph("\u2794")
-                            .setFont(zapfDingbats)
-                            .setFontSize(24)
-                            .setTextAlignment(TextAlignment.CENTER), Border.NO_BORDER)
-                    .setVerticalAlignment(VerticalAlignment.MIDDLE));
+
+            String imgPath = "/com/zephyr/ui/images/icon-plane.png";
+            URL imgUrl = getClass().getResource(imgPath);
+
+            Image avionImg = null;
+
+            if (imgUrl == null) {
+                System.err.println("Error de PDF: ¡No se encontró la imagen del avión en " + imgPath + "!");
+                System.err.println("La ruta de ejecución es: " + new java.io.File(".").getCanonicalPath());
+            } else {
+                avionImg = new Image(ImageDataFactory.create(imgUrl))
+                        .setWidth(30)
+                        .setHeight(30);
+            }
+
+            Cell cellAvion = new Cell()
+                    .setBorder(Border.NO_BORDER)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE)
+                    .setTextAlignment(TextAlignment.CENTER);
+
+            cellAvion.setPaddingLeft(25f);
+            cellAvion.setPaddingRight(10f);
+
+            if (avionImg != null) {
+                cellAvion.add(avionImg);
+            } else {
+                cellAvion.add(new Paragraph("-->").setFontSize(24));
+            }
+            tablaVuelo.addCell(cellAvion);
+
 
             tablaVuelo.addCell(crearCeldaSimple(
                     new Paragraph(vuelo.getDestinoIata()).setBold().setFontSize(36).setTextAlignment(TextAlignment.RIGHT), Border.NO_BORDER));
@@ -151,7 +174,7 @@ public class ReportServiceImpl implements ReportService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy HH:mm");
 
             Table tablaDetalles2 = new Table(UnitValue.createPercentArray(new float[]{50f, 50f}))
-                    .useAllAvailableWidth().setMarginTop(5); // <-- Reducido de 10 a 5
+                    .useAllAvailableWidth().setMarginTop(5);
             tablaDetalles2.addCell(crearCeldaDetalle("PUERTA", vuelo.getCodigoPuerta() != null ? vuelo.getCodigoPuerta() : "---"));
             tablaDetalles2.addCell(crearCeldaDetalle("FECHA/HORA", vuelo.getFechaSalida().format(formatter)));
             celdaIzquierda.add(tablaDetalles2);
