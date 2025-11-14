@@ -25,8 +25,8 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
     public List<Vuelo> findVuelosDetalladosDelDia() {
         List<Vuelo> vuelos = new ArrayList<>();
         String sql = "SELECT * FROM v_vuelos_programados " +
-                     "WHERE fecha_salida::date = CURRENT_DATE " +
-                     "ORDER BY fecha_salida ASC";
+                "WHERE fecha_salida::date = CURRENT_DATE " +
+                "ORDER BY fecha_salida ASC";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = pstmt.executeQuery()) {
