@@ -83,6 +83,8 @@ SET session_replication_role = 'origin';
 
 SELECT 'Script de inserción V2 (Consolidado) ejecutado exitosamente.' AS "Estado";
 
+-- se actuaizara la db
+
 
 
 
