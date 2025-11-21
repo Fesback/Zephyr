@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+
+
+<?import javafx.scene.control.TabPane?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.zephyr.ui.controller.ConfigController"
+            styleClass="main-content-vbox">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+    </stylesheets>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="config-tab-pane">
+
+            <Tab text="Aerolíneas">
+                <content>
+                    <BorderPane>
+                        <padding>
+                            <Insets top="20.0" left="20.0" right="20.0" bottom="20.0" />
+                        </padding>
+
+                        <center>
+                            <VBox spacing="10.0">
+                                <Label text="Catálogo de Aerolíneas" styleClass="dashboard-subtitle" />
+                                <TableView fx:id="tablaAerolineas" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                                        <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre" />
+                                        <TableColumn fx:id="colIata" prefWidth="80.0" text="IATA" />
+                                        <TableColumn fx:id="colPais" prefWidth="150.0" text="País" />
+                                        <TableColumn fx:id="colTelefono" prefWidth="150.0" text="Teléfono" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </center>
+
+                        <right>
+                            <VBox fx:id="panelFormulario" prefWidth="320.0" styleClass="details-pane" spacing="15.0">
+                                <padding>
+                                    <Insets left="20.0" />
+                                </padding>
+                                <children>
+                                    <Label fx:id="labelTituloFormulario" text="Nueva Aerolínea" styleClass="dashboard-subtitle" />
+
+                                    <GridPane vgap="10.0">
+                                        <columnConstraints>
+                                            <ColumnConstraints prefWidth="80.0" />
+                                            <ColumnConstraints hgrow="ALWAYS" />
+                                        </columnConstraints>
+
+                                        <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtNombre" promptText="Ej: American Airlines" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                        <Label text="IATA:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtIata" promptText="Ej: AA" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                        <Label text="País:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtPais" promptText="Ej: Estados Unidos" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                        <Label text="Teléfono:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtTelefono" promptText="Ej: +1 800..." GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                    </GridPane>
+
+                                    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                                        <children>
+                                            <Button fx:id="btnGuardar" text="Guardar" styleClass="action-button-success" />
+                                            <Button fx:id="btnEliminar" text="Eliminar" styleClass="action-button-danger" disable="true"/>
+                                            <Button fx:id="btnLimpiar" text="Limpiar" styleClass="action-button-secondary" />
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+                        </right>
+
+                    </BorderPane>
+                </content>
+            </Tab>
+
+            <Tab text="Aviones" disable="true">
+                <content>
+                    <Label text="Módulo de Aviones en Construcción..." />
+                </content>
+            </Tab>
+
+            <Tab text="Aeropuertos" disable="true">
+                <content>
+                    <Label text="Módulo de Aeropuertos en Construcción..." />
+                </content>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

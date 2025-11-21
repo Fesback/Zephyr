@@ -118,6 +118,10 @@ public class DashboardController implements Initializable {
         btnReportes.setOnAction(event -> {
             cargarVistaEnCentro("/com/zephyr/ui/fxml/reportes.fxml");
         });
+
+        btnConfiguracion.setOnAction(event -> {
+            cargarVistaEnCentro("/com/zephyr/ui/fxml/configuracion.fxml");
+        });
     }
 
     private void cargarVistaEnCentro(String fxmlPath) {
