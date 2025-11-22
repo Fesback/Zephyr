@@ -17,6 +17,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 
+<?import javafx.scene.control.ComboBox?>
+
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.zephyr.ui.controller.ConfigController"
             styleClass="main-content-vbox">
@@ -31,10 +33,7 @@
             <Tab text="Aerolíneas">
                 <content>
                     <BorderPane>
-                        <padding>
-                            <Insets top="20.0" left="20.0" right="20.0" bottom="20.0" />
-                        </padding>
-
+                        <padding><Insets top="20.0" left="20.0" right="20.0" bottom="20.0" /></padding>
                         <center>
                             <VBox spacing="10.0">
                                 <Label text="Catálogo de Aerolíneas" styleClass="dashboard-subtitle" />
@@ -49,58 +48,143 @@
                                 </TableView>
                             </VBox>
                         </center>
-
                         <right>
                             <VBox fx:id="panelFormulario" prefWidth="320.0" styleClass="details-pane" spacing="15.0">
-                                <padding>
-                                    <Insets left="20.0" />
-                                </padding>
+                                <padding><Insets left="20.0" /></padding>
                                 <children>
                                     <Label fx:id="labelTituloFormulario" text="Nueva Aerolínea" styleClass="dashboard-subtitle" />
-
                                     <GridPane vgap="10.0">
-                                        <columnConstraints>
-                                            <ColumnConstraints prefWidth="80.0" />
-                                            <ColumnConstraints hgrow="ALWAYS" />
-                                        </columnConstraints>
-
+                                        <columnConstraints><ColumnConstraints prefWidth="80.0" /><ColumnConstraints hgrow="ALWAYS" /></columnConstraints>
                                         <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                                        <TextField fx:id="txtNombre" promptText="Ej: American Airlines" GridPane.rowIndex="0" GridPane.columnIndex="1" />
-
+                                        <TextField fx:id="txtNombre" GridPane.rowIndex="0" GridPane.columnIndex="1" />
                                         <Label text="IATA:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                                        <TextField fx:id="txtIata" promptText="Ej: AA" GridPane.rowIndex="1" GridPane.columnIndex="1" />
-
+                                        <TextField fx:id="txtIata" GridPane.rowIndex="1" GridPane.columnIndex="1" />
                                         <Label text="País:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                                        <TextField fx:id="txtPais" promptText="Ej: Estados Unidos" GridPane.rowIndex="2" GridPane.columnIndex="1" />
-
+                                        <TextField fx:id="txtPais" GridPane.rowIndex="2" GridPane.columnIndex="1" />
                                         <Label text="Teléfono:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-                                        <TextField fx:id="txtTelefono" promptText="Ej: +1 800..." GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                        <TextField fx:id="txtTelefono" GridPane.rowIndex="3" GridPane.columnIndex="1" />
                                     </GridPane>
-
                                     <HBox spacing="10.0" alignment="CENTER_RIGHT">
-                                        <children>
-                                            <Button fx:id="btnGuardar" text="Guardar" styleClass="action-button-success" />
-                                            <Button fx:id="btnEliminar" text="Eliminar" styleClass="action-button-danger" disable="true"/>
-                                            <Button fx:id="btnLimpiar" text="Limpiar" styleClass="action-button-secondary" />
-                                        </children>
+                                        <Button fx:id="btnGuardar" text="Guardar" styleClass="action-button-success" />
+                                        <Button fx:id="btnEliminar" text="Eliminar" styleClass="action-button-danger" disable="true"/>
+                                        <Button fx:id="btnLimpiar" text="Limpiar" styleClass="action-button-secondary" />
                                     </HBox>
                                 </children>
                             </VBox>
                         </right>
-
                     </BorderPane>
                 </content>
             </Tab>
 
-            <Tab text="Aviones" disable="true">
+            <Tab text="Aviones">
                 <content>
-                    <Label text="Módulo de Aviones en Construcción..." />
+                    <BorderPane>
+                        <padding><Insets top="20.0" left="20.0" right="20.0" bottom="20.0" /></padding>
+
+                        <center>
+                            <VBox spacing="10.0">
+                                <Label text="Flota de Aviones" styleClass="dashboard-subtitle" />
+                                <TableView fx:id="tablaAviones" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colAvionId" prefWidth="50.0" text="ID" />
+                                        <TableColumn fx:id="colAvionMatricula" prefWidth="100.0" text="Matrícula" />
+                                        <TableColumn fx:id="colAvionModelo" prefWidth="150.0" text="Modelo" />
+                                        <TableColumn fx:id="colAvionAerolinea" prefWidth="150.0" text="Aerolínea" />
+                                        <TableColumn fx:id="colAvionEstado" prefWidth="100.0" text="Estado" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </center>
+
+                        <right>
+                            <VBox prefWidth="350.0" styleClass="details-pane" spacing="15.0">
+                                <padding><Insets left="20.0" /></padding>
+                                <children>
+                                    <Label fx:id="lblFormAvion" text="Nuevo Avión" styleClass="dashboard-subtitle" />
+                                    <GridPane vgap="15.0" hgap="10.0">
+                                        <columnConstraints>
+                                            <ColumnConstraints prefWidth="90.0" minWidth="90.0" />
+                                            <ColumnConstraints hgrow="ALWAYS" />
+                                        </columnConstraints>
+
+                                        <Label text="Matrícula:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtAvionMatricula" promptText="Ej: N12345" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                        <Label text="Año Fab:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtAvionAnio" promptText="Ej: 2020" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                        <Label text="Estado:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                        <ComboBox fx:id="comboAvionEstado" promptText="Operativo / Mantenimiento" maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                        <Label text="Modelo:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                        <ComboBox fx:id="comboAvionModelo" promptText="Seleccione Modelo" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                        <Label text="Aerolínea:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                        <ComboBox fx:id="comboAvionAerolinea" promptText="Seleccione Aerolínea" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                                    </GridPane>
+
+                                    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                                        <Button fx:id="btnAvionGuardar" text="Guardar" styleClass="action-button-success" />
+                                        <Button fx:id="btnAvionEliminar" text="Eliminar" styleClass="action-button-danger" disable="true"/>
+                                        <Button fx:id="btnAvionLimpiar" text="Limpiar" styleClass="action-button-secondary" />
+                                    </HBox>
+                                </children>
+                            </VBox>
+                        </right>
+                    </BorderPane>
                 </content>
             </Tab>
 
-            <Tab text="Aeropuertos" disable="true">
+            <Tab text="Aeropuertos">
                 <content>
-                    <Label text="Módulo de Aeropuertos en Construcción..." />
+                    <BorderPane>
+                        <padding><Insets top="20.0" left="20.0" right="20.0" bottom="20.0" /></padding>
+                        <center>
+                            <VBox spacing="10.0">
+                                <Label text="Catálogo de Aeropuertos" styleClass="dashboard-subtitle" />
+                                <TableView fx:id="tablaAeropuertos" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colAeroId" prefWidth="50.0" text="ID" />
+                                        <TableColumn fx:id="colAeroNombre" prefWidth="250.0" text="Nombre" />
+                                        <TableColumn fx:id="colAeroIata" prefWidth="80.0" text="IATA" />
+                                        <TableColumn fx:id="colAeroCiudad" prefWidth="150.0" text="Ciudad" />
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </center>
+                        <right>
+                            <VBox prefWidth="350.0" styleClass="details-pane" spacing="15.0">
+                                <padding><Insets left="20.0" /></padding>
+                                <children>
+                                    <Label fx:id="lblFormAeropuerto" text="Nuevo Aeropuerto" styleClass="dashboard-subtitle" />
+                                    <GridPane vgap="15.0" hgap="10.0">
+                                        <columnConstraints>
+                                            <ColumnConstraints prefWidth="80.0" minWidth="80.0" />
+                                            <ColumnConstraints hgrow="ALWAYS" />
+                                        </columnConstraints>
+
+                                        <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtAeroNombre" promptText="Ej: Jorge Chávez" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                        <Label text="IATA:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtAeroIata" promptText="Ej: LIM" maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                        <Label text="Dirección:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                        <TextField fx:id="txtAeroDireccion" promptText="Av. Elmer Faucett..." maxWidth="Infinity" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                        <Label text="Ciudad:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                        <ComboBox fx:id="comboAeroCiudad" promptText="Seleccione Ciudad" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                    </GridPane>
+
+                                    <HBox spacing="10.0" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                                        <Button fx:id="btnAeroGuardar" text="Guardar" styleClass="action-button-success" />
+                                        <Button fx:id="btnAeroEliminar" text="Eliminar" styleClass="action-button-danger" disable="true"/>
+                                        <Button fx:id="btnAeroLimpiar" text="Limpiar" styleClass="action-button-secondary" />
+                                    </HBox>
+                                </children>
+                            </VBox>
+                        </right>
+                    </BorderPane>
                 </content>
             </Tab>
 
