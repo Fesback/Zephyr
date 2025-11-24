@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.zephyr.ui.controller.VuelosController"
+            styleClass="main-content-vbox">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+    </stylesheets>
+
+    <center>
+        <VBox spacing="15.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="20.0" left="20.0" right="20.0" bottom="20.0" />
+            </padding>
+
+            <children>
+                <Label text="Gestión de Vuelos" styleClass="dashboard-title" />
+
+                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 0 0 10px 0;">
+                    <Button fx:id="btnNuevoVuelo" text="+ Programar Nuevo Vuelo"
+                            styleClass="action-button-success" />
+                </HBox>
+
+                <TableView fx:id="tablaVuelos" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCodigo" prefWidth="80.0" text="Código" />
+                        <TableColumn fx:id="colAerolinea" prefWidth="150.0" text="Aerolínea" />
+                        <TableColumn fx:id="colOrigen" prefWidth="80.0" text="Origen" />
+                        <TableColumn fx:id="colDestino" prefWidth="80.0" text="Destino" />
+                        <TableColumn fx:id="colFecha" prefWidth="150.0" text="Fecha Salida" />
+                        <TableColumn fx:id="colEstado" prefWidth="120.0" text="Estado" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

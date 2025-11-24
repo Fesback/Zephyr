@@ -1,6 +1,7 @@
 package com.zephyr.repository;
 
 import com.zephyr.domain.Vuelo;
+import com.zephyr.domain.VueloRegistro;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +12,7 @@ public interface VueloRepository {
     // crud luego
     //actualizar esto llama al SP
     void actualizarEstadoVuelo(int idVuelo, int idNuevoEstado);
+
+    // para seccion Gestionar Vuelo
+    void registrarVuelo(VueloRegistro vueloRegistro);
 }

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.zephyr.ui.controller.RegistrarVueloController"
+      styleClass="main-content-vbox" spacing="20.0" prefWidth="650.0" prefHeight="600.0">
+
+    <stylesheets>
+        <URL value="@../css/registrar-vuelo.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets top="30.0" left="40.0" right="40.0" bottom="30.0" />
+    </padding>
+
+    <children>
+        <Label text="Programar Nuevo Vuelo" styleClass="dashboard-title" />
+
+        <GridPane vgap="15.0" hgap="15.0">
+            <columnConstraints>
+                <ColumnConstraints minWidth="180.0" prefWidth="200.0" hgrow="NEVER" halignment="RIGHT" />
+
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="Infinity" />
+            </columnConstraints>
+
+            <Label text="Código Vuelo:" styleClass="label-form" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+            <TextField fx:id="txtCodigo" promptText="Ej: AA123" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+            <Label text="Aerolínea:" styleClass="label-form" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+            <ComboBox fx:id="comboAerolinea" promptText="Seleccione Aerolínea" prefWidth="2000.0" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+            <Label text="Avión Asignado:" styleClass="label-form" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+            <ComboBox fx:id="comboAvion" promptText="Seleccione Avión" prefWidth="2000.0" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+            <Label text="Aeropuerto Origen:" styleClass="label-form" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+            <ComboBox fx:id="comboOrigen" promptText="Aeropuerto Salida" prefWidth="2000.0" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+            <Label text="Aeropuerto Destino:" styleClass="label-form" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+            <ComboBox fx:id="comboDestino" promptText="Aeropuerto Llegada" prefWidth="2000.0" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+            <Label text="Fecha Salida (Local):" styleClass="label-form" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+            <HBox spacing="10.0" GridPane.rowIndex="5" GridPane.columnIndex="1" alignment="CENTER_LEFT">
+                <DatePicker fx:id="dateSalida" promptText="DD/MM/AAAA" prefWidth="2000.0" />
+                <TextField fx:id="timeSalida" promptText="HH:mm" prefWidth="100.0" />
+            </HBox>
+
+            <Label text="Fecha Llegada (Local):" styleClass="label-form" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+            <HBox spacing="10.0" GridPane.rowIndex="6" GridPane.columnIndex="1" alignment="CENTER_LEFT">
+                <DatePicker fx:id="dateLlegada" promptText="DD/MM/AAAA" prefWidth="2000.0" />
+                <TextField fx:id="timeLlegada" promptText="HH:mm" prefWidth="100.0" />
+            </HBox>
+
+        </GridPane>
+
+        <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 20px 0 0 0;">
+            <children>
+                <Button fx:id="btnCancelar" text="Cancelar" styleClass="action-button-secondary" />
+                <Button fx:id="btnGuardar" text="Programar Vuelo" styleClass="action-button-success" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

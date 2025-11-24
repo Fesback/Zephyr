@@ -1,0 +1,68 @@
+/* El contenedor principal */
+.main-content-vbox {
+    -fx-background-color: #ffffff;
+    -fx-spacing: 15px; /* Reducido de 20px */
+}
+
+/* Título grande */
+.dashboard-title {
+    -fx-font-size: 22px; /* Reducido de 24px */
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 0 0 10px 0;
+}
+
+/* Etiquetas (Labels) del formulario */
+.label-form {
+    -fx-font-size: 13px; /* Reducido de 14px */
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+    -fx-alignment: center-right;
+}
+
+/* Campos de Texto y ComboBoxes */
+.text-field, .combo-box, .date-picker {
+    -fx-font-size: 13px; /* Reducido de 14px */
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 8px; /* Padding interno ajustado */
+    -fx-pref-height: 35px; /* Altura un poco más compacta */
+    -fx-min-width: 150px; /* Asegura que no se aplasten demasiado */
+}
+
+/* Efecto Focus */
+.text-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #0052CC;
+    -fx-background-color: #ffffff;
+}
+
+/* Botones */
+.action-button-success {
+    -fx-background-color: #27AE60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.action-button-success:hover {
+    -fx-background-color: #219150;
+}
+
+.action-button-secondary {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.action-button-secondary:hover {
+    -fx-background-color: #7f8c8d;
+}

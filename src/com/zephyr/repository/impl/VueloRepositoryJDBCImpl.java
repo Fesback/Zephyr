@@ -2,6 +2,7 @@ package com.zephyr.repository.impl;
 
 import com.itextpdf.kernel.pdf.DestinationResolverCopyFilter;
 import com.zephyr.domain.Vuelo;
+import com.zephyr.domain.VueloRegistro;
 import com.zephyr.repository.VueloRepository;
 import com.zephyr.util.DatabaseConnector;
 
@@ -74,6 +75,29 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
             }
         } catch (SQLException e) {
             System.err.println("Error al llamar al SP");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void registrarVuelo(VueloRegistro vuelo) {
+        String sql = "INSERT INTO Vuelo (codigo_vuelo, fecha_salida, fecha_llegada, id_aerolinea, id_avion, id_aeropuerto_origen, id_aeropuerto_destino, id_estado_vuelo) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vuelo.getCodigoVuelo());
+            pstmt.setTimestamp(2, Timestamp.valueOf(vuelo.getFechaSalida()));
+            pstmt.setTimestamp(3, Timestamp.valueOf(vuelo.getFechaLlegada()));
+            pstmt.setInt(4, vuelo.getIdAerolinea());
+            pstmt.setInt(5, vuelo.getIdAvion());
+            pstmt.setInt(6, vuelo.getIdAeropuertoOrigen());
+            pstmt.setInt(7, vuelo.getIdAeropuertoDestino());
+            pstmt.setInt(8, vuelo.getIdEstadoVuelo());
+
+            pstmt.executeUpdate();
+            System.out.println("Vuelo registrado exitosamente: " + vuelo.getCodigoVuelo());
+
+        } catch (SQLException e) {
+            System.err.println("Error al registrar Vuelo: " + e.getMessage());
             e.printStackTrace();
         }
     }
