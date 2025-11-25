@@ -15,10 +15,13 @@ import javafx.fxml.Initializable;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,7 +39,11 @@ public class DashboardController implements Initializable {
 
     @FXML private Button btnDashboard, btnGestionVuelos, btnEmbarque,btnGestionPersonal, btnReportes, btnConfiguracion;
 
-    @FXML private Label labelBienvenida;
+    //@FXML private Label labelBienvenida;
+    @FXML private MenuButton menuUsuario;
+    @FXML private MenuItem menuItemLogout;
+    @FXML private MenuItem menuItemPerfil;
+
     @FXML private TableView<Vuelo> tablaVuelos;
     @FXML private TableColumn<Vuelo,String> colCodigoVuelo;
     @FXML private TableColumn<Vuelo,String> colAerolinea;
@@ -72,7 +79,7 @@ public class DashboardController implements Initializable {
         this.usuarioLogueado = personal;
 
         if (usuarioLogueado != null) {
-            labelBienvenida.setText("Bienvenido, " + usuarioLogueado.getNombres() + "!");
+            menuUsuario.setText("Hola, " + usuarioLogueado.getNombres());
             configurarVistaPorRol(usuarioLogueado.getRol().getNombreRol());
         }
     }
@@ -96,6 +103,8 @@ public class DashboardController implements Initializable {
         btnIniciarEmbarque.setOnAction(event -> handleActualizarEstado(2, "Embarcando"));
         btnRetrasarVuelo.setOnAction(event -> handleActualizarEstado(5,"Retrasado"));
 
+        //logout
+        menuItemLogout.setOnAction(event -> handleLogout());
 
         // guardar panel original del dash
         this.dashboardCenterNode = rootPane.getCenter();
@@ -126,6 +135,30 @@ public class DashboardController implements Initializable {
         btnGestionVuelos.setOnAction(event -> {
             cargarVistaEnCentro("/com/zephyr/ui/fxml/vuelos.fxml");
         });
+
+        btnAsignarPuerta.setOnAction(event -> {
+           abrirPopupAsignarPuerta();
+        });
+    }
+
+    // logout
+    private void handleLogout() {
+        try {
+            Stage currentStage = (Stage) menuUsuario.getScene().getWindow();
+            currentStage.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zephyr/ui/fxml/login.fxml"));
+            Parent root = loader.load();
+            Stage loginStage = new Stage();
+
+            loginStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/zephyr/ui/images/zephyr-icon.png")));
+            loginStage.setTitle("Zephyr - Login");
+            loginStage.setScene(new Scene(root, 1280, 720));
+            loginStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void cargarVistaEnCentro(String fxmlPath) {
@@ -191,6 +224,33 @@ public class DashboardController implements Initializable {
             btnGestionPersonal.setVisible(false);
             btnConfiguracion.setVisible(false);
 
+        }
+    }
+
+    // Asignar puerta
+    @FXML
+    private void abrirPopupAsignarPuerta() {
+        if (vueloSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Sin Selección", "Seleccione un vuelo primero.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zephyr/ui/fxml/asignar-puerta.fxml"));
+            Parent root = loader.load();
+
+            AsignarPuertaController controller = loader.getController();
+            controller.setDatos(vueloSeleccionado, this);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Asignar Puerta");
+            stage.showAndWait();
+
+            cargarVuelosDelDia();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

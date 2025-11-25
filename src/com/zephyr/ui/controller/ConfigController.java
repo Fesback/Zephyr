@@ -1,20 +1,23 @@
 package com.zephyr.ui.controller;
 
 import com.zephyr.domain.*;
-import com.zephyr.repository.AerolineaRepository;
-import com.zephyr.repository.impl.AerolineaJDBCImpl;
 import com.zephyr.service.*;
 import com.zephyr.service.impl.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ConfigController implements Initializable{
@@ -24,6 +27,8 @@ public class ConfigController implements Initializable{
     @FXML private Label labelTituloFormulario;
     @FXML private TextField txtNombre, txtIata, txtPais, txtTelefono;
     @FXML private Button btnGuardar, btnEliminar, btnLimpiar;
+    @FXML private MenuButton menuUsuario;
+    @FXML private MenuItem menuItemLogout;
 
     // ==================== AEROPUERTOS  ====================
     @FXML private TableView<Aeropuerto> tablaAeropuertos;
@@ -81,7 +86,6 @@ public class ConfigController implements Initializable{
         setupAeropuertos();
         setupAviones();
     }
-
 
     // ====================  ====================
     private void setupAerolineas() {
