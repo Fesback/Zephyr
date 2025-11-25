@@ -15,4 +15,7 @@ public interface VueloRepository {
 
     // para seccion Gestionar Vuelo
     void registrarVuelo(VueloRegistro vueloRegistro);
+
+    //listar todos los vuelos
+    List<Vuelo> findAll();
 }

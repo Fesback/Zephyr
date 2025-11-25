@@ -58,10 +58,9 @@ public class VuelosController implements Initializable {
     }
 
     private void cargarVuelos() {
-        listaVuelos.setAll(vueloService.getVuelosProgramadosHoy());
+        listaVuelos.setAll(vueloService.listarTodosLosVuelos());
     }
 
-    // --- ABRIR EL POPUP QUE YA CREASTE ---
     private void abrirPopupRegistroVuelo() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zephyr/ui/fxml/registrar-vuelo.fxml"));

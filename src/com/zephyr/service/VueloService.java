@@ -10,4 +10,5 @@ public interface VueloService {
     void actualizarEstadoVuelo(int idVuelo, int idNuevoEstado);
 
     void registrarVuelo(VueloRegistro vuelo);
+    List<Vuelo> listarTodosLosVuelos();
 }

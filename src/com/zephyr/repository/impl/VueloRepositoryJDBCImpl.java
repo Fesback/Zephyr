@@ -102,6 +102,25 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
         }
     }
 
+    @Override
+    public List<Vuelo> findAll() {
+        List<Vuelo> vuelos = new ArrayList<>();
+        String sql = "SELECT * FROM v_vuelos_programados ORDER BY fecha_salida DESC";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                try {
+                    vuelos.add(mapResultSetToVuelo(rs));
+                } catch (SQLException e) {  }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vuelos;
+    }
+
     private Vuelo mapResultSetToVuelo(ResultSet rs) throws SQLException {
         return new Vuelo(
                 rs.getInt("id_vuelo"),

@@ -36,4 +36,9 @@ public class VueloServiceImpl implements VueloService {
         }
         vueloRepository.registrarVuelo(vuelo);
     }
+
+    @Override
+    public List<Vuelo> listarTodosLosVuelos() {
+        return vueloRepository.findAll();
+    }
 }
