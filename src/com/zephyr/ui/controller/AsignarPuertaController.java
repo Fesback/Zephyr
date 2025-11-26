@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AsignarPuertaController implements Initializable {
@@ -34,22 +35,21 @@ public class AsignarPuertaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            var puertas = puertaService.obtenerPuertasDisponibles(1);
-            comboPuertas.setItems(FXCollections.observableArrayList(puertas));
-        } catch (Exception e) {
-            System.err.println("Error al cargar puertas: " + e.getMessage());
-        }
-
         comboPuertas.setConverter(new StringConverter<PuertaEmbarque>() {
-            @Override public String toString(PuertaEmbarque p) {
+            @Override
+            public String toString(PuertaEmbarque p) {
                 return p == null ? null : p.getCodigoPuerta() + " (" + p.getUbicacionTerminal() + ")";
             }
-            @Override public PuertaEmbarque fromString(String s) { return null; }
+
+            @Override
+            public PuertaEmbarque fromString(String s) {
+                return null;
+            }
         });
 
         btnGuardar.setOnAction(e -> handleGuardar());
         btnCancelar.setOnAction(e -> cerrar());
+
     }
 
     public void setDatos(Vuelo vuelo, DashboardController parent) {
@@ -57,7 +57,29 @@ public class AsignarPuertaController implements Initializable {
         this.dashboardController = parent;
 
         if (vuelo != null) {
-            lblVueloInfo.setText("Vuelo: " + vuelo.getCodigoVuelo() + " | Destino: " + vuelo.getDestinoIata());
+            lblVueloInfo.setText("Vuelo: " + vuelo.getCodigoVuelo() +
+                    " | Origen: " + vuelo.getOrigenIata());
+
+            cargarPuertasDelAeropuerto(vuelo.getIdAeropuertoOrigen());
+        }
+    }
+
+    private void cargarPuertasDelAeropuerto(int idAeropuertoOrigen) {
+        try {
+            System.out.println("Buscando puertas para el Aeropuerto ID: " + idAeropuertoOrigen);
+
+            List<PuertaEmbarque> puertasDisponibles = puertaService.obtenerPuertasDisponibles(idAeropuertoOrigen);
+
+            comboPuertas.setItems(FXCollections.observableArrayList(puertasDisponibles));
+
+            if (puertasDisponibles.isEmpty()) {
+                comboPuertas.setPromptText("No hay puertas registradas para este aeropuerto");
+            } else {
+                comboPuertas.setPromptText("Seleccione una puerta...");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al cargar puertas: " + e.getMessage());
         }
     }
 
@@ -71,12 +93,10 @@ public class AsignarPuertaController implements Initializable {
             puertaService.asignarPuertaAVuelo(vueloSeleccionado.getIdVuelo(), comboPuertas.getValue().getIdPuertaEmbarque());
 
             if (dashboardController != null) {
-                System.out.println("Puerta asignada. Refrescando...");
+                dashboardController.refrescarDashboard();
             }
 
-            // Mostramos éxito y cerramos
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Puerta " + comboPuertas.getValue().getCodigoPuerta() + " asignada correctamente.");
-            alert.showAndWait();
+            mostrarInfo("Puerta " + comboPuertas.getValue().getCodigoPuerta() + " asignada correctamente.");
             cerrar();
         }
     }
@@ -87,6 +107,18 @@ public class AsignarPuertaController implements Initializable {
     }
 
     private void mostrarAlerta(String msg) {
-        new Alert(Alert.AlertType.WARNING, msg).show();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Aviso");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    private void mostrarInfo(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Éxito");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

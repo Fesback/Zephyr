@@ -84,6 +84,11 @@ public class DashboardController implements Initializable {
         }
     }
 
+    // refrescar popups
+    public void refrescarDashboard() {
+        cargarVuelosDelDia();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

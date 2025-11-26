@@ -9,6 +9,12 @@ public class Vuelo {
     private LocalDateTime fechaLlegada;
     private String estadoVuelo;
 
+    private int idAerolinea;
+    private int idAvion;
+    private int idAeropuertoOrigen;
+    private int idAeropuertoDestino;
+    private int idPuerta;
+
     private String aerolinea;
     private String aerolineaIata;
     private String avionMatricula;
@@ -26,15 +32,30 @@ public class Vuelo {
     private String codigoPuerta;
     private String ubicacionTerminal;
 
-    //Constructor >:)
-    public Vuelo(int idVuelo, String codigoVuelo, LocalDateTime fechaSalida, LocalDateTime fechaLlegada, String estadoVuelo, String aerolinea,
-                 String aerolineaIata, String avionMatricula, String avionModelo, int capacidadPasajeros, String aeropuertoOrigen, String origenIata,
-                 String ciudadOrigen, String aeropuertoDestino, String destinoIata, String ciudadDestino, String codigoPuerta, String ubicacionTerminal) {
+    public Vuelo() {
+    }
+
+    // --- Constructor
+    public Vuelo(int idVuelo, String codigoVuelo, LocalDateTime fechaSalida, LocalDateTime fechaLlegada,
+                 // IDs
+                 int idAerolinea, int idAvion, int idAeropuertoOrigen, int idAeropuertoDestino, int idPuerta,
+                 // Textos
+                 String estadoVuelo, String aerolinea, String aerolineaIata, String avionMatricula, String avionModelo,
+                 int capacidadPasajeros, String aeropuertoOrigen, String origenIata, String ciudadOrigen,
+                 String aeropuertoDestino, String destinoIata, String ciudadDestino,
+                 String codigoPuerta, String ubicacionTerminal) {
 
         this.idVuelo = idVuelo;
         this.codigoVuelo = codigoVuelo;
         this.fechaSalida = fechaSalida;
         this.fechaLlegada = fechaLlegada;
+
+        this.idAerolinea = idAerolinea;
+        this.idAvion = idAvion;
+        this.idAeropuertoOrigen = idAeropuertoOrigen;
+        this.idAeropuertoDestino = idAeropuertoDestino;
+        this.idPuerta = idPuerta;
+
         this.estadoVuelo = estadoVuelo;
         this.aerolinea = aerolinea;
         this.aerolineaIata = aerolineaIata;
@@ -91,6 +112,46 @@ public class Vuelo {
 
     public void setEstadoVuelo(String estadoVuelo) {
         this.estadoVuelo = estadoVuelo;
+    }
+
+    public int getIdAerolinea() {
+        return idAerolinea;
+    }
+
+    public void setIdAerolinea(int idAerolinea) {
+        this.idAerolinea = idAerolinea;
+    }
+
+    public int getIdAvion() {
+        return idAvion;
+    }
+
+    public void setIdAvion(int idAvion) {
+        this.idAvion = idAvion;
+    }
+
+    public int getIdAeropuertoOrigen() {
+        return idAeropuertoOrigen;
+    }
+
+    public void setIdAeropuertoOrigen(int idAeropuertoOrigen) {
+        this.idAeropuertoOrigen = idAeropuertoOrigen;
+    }
+
+    public int getIdAeropuertoDestino() {
+        return idAeropuertoDestino;
+    }
+
+    public void setIdAeropuertoDestino(int idAeropuertoDestino) {
+        this.idAeropuertoDestino = idAeropuertoDestino;
+    }
+
+    public int getIdPuerta() {
+        return idPuerta;
+    }
+
+    public void setIdPuerta(int idPuerta) {
+        this.idPuerta = idPuerta;
     }
 
     public String getAerolinea() {

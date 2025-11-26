@@ -122,16 +122,27 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
     }
 
     private Vuelo mapResultSetToVuelo(ResultSet rs) throws SQLException {
+
+        String codigoPuerta = rs.getString("codigo_puerta");
+        String ubicacionTerminal = rs.getString("ubicacion_terminal");
+        String avionMatricula = rs.getString("avion_matricula");
+        String avionModelo = rs.getString("avion_modelo");
+
         return new Vuelo(
                 rs.getInt("id_vuelo"),
                 rs.getString("codigo_vuelo"),
                 rs.getTimestamp("fecha_salida").toLocalDateTime(),
                 rs.getTimestamp("fecha_llegada").toLocalDateTime(),
+                rs.getInt("id_aerolinea"),
+                rs.getInt("id_avion"),
+                rs.getInt("id_aeropuerto_origen"),
+                rs.getInt("id_aeropuerto_destino"),
+                rs.getInt("id_puerta_asignada"),
                 rs.getString("estado_vuelo"),
                 rs.getString("aerolinea"),
                 rs.getString("aerolinea_iata"),
-                rs.getString("avion_matricula"),
-                rs.getString("avion_modelo"),
+                avionMatricula,
+                avionModelo,
                 rs.getInt("capacidad_pasajeros"),
                 rs.getString("aeropuerto_origen"),
                 rs.getString("origen_iata"),
@@ -139,8 +150,8 @@ public class VueloRepositoryJDBCImpl implements VueloRepository {
                 rs.getString("aeropuerto_destino"),
                 rs.getString("destino_iata"),
                 rs.getString("ciudad_destino"),
-                rs.getString("codigo_puerta"),
-                rs.getString("ubicacion_terminal")
+                codigoPuerta,
+                ubicacionTerminal
         );
     }
 }
