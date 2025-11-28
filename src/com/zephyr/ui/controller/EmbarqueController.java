@@ -1,15 +1,21 @@
 package com.zephyr.ui.controller;
 
+import com.zephyr.domain.Boleto;
+import com.zephyr.domain.Pasajero;
 import com.zephyr.domain.PasajeroPorVuelo;
 import com.zephyr.domain.Vuelo;
 import com.zephyr.repository.BoletoRepository;
+import com.zephyr.repository.PasajeroRepository;
 import com.zephyr.repository.VueloRepository;
 import com.zephyr.repository.impl.BoletoRepositoryJDBCImpl;
+import com.zephyr.repository.impl.PasajeroRepositoryJDBCImpl;
 import com.zephyr.repository.impl.VueloRepositoryJDBCImpl;
 import com.zephyr.service.BoletoService;
+import com.zephyr.service.PasajeroService;
 import com.zephyr.service.ReportService;
 import com.zephyr.service.VueloService;
 import com.zephyr.service.impl.BoletoServiceImpl;
+import com.zephyr.service.impl.PasajeroServiceImpl;
 import com.zephyr.service.impl.ReportServiceImpl;
 import com.zephyr.service.impl.VueloServiceImpl;
 import javafx.collections.FXCollections;
@@ -20,7 +26,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,20 +46,32 @@ public class EmbarqueController implements Initializable {
     @FXML private Label labelManifiesto;
     @FXML private Button btnGenerarPdf;
 
+    @FXML private TextField txtNewNombre;
+    @FXML private TextField txtNewApellido;
+    @FXML private TextField txtNewDoc;
+    @FXML private TextField txtNewNac;
+    @FXML private TextField txtNewAsiento;
+    @FXML private TextField txtNewPrecio;
+    @FXML private Button btnRegistrarPasajero;
+
     //serivces
     private final VueloService vueloService;
     private final BoletoService boletoService;
     private final ReportService  reportService;
+    private final PasajeroService pasajeroService;
 
     private ObservableList<Vuelo> listaVuelosObservable;
     private ObservableList<PasajeroPorVuelo> listaPasajerosObservable;
 
     public EmbarqueController() {
+
         VueloRepository vueloRepository = new VueloRepositoryJDBCImpl();
         this.vueloService = new VueloServiceImpl(vueloRepository);
 
         BoletoRepository boletoRepository = new BoletoRepositoryJDBCImpl();
         this.boletoService = new BoletoServiceImpl(boletoRepository);
+
+        this.pasajeroService = new PasajeroServiceImpl();
 
         this.reportService = new ReportServiceImpl();
 
@@ -80,6 +100,8 @@ public class EmbarqueController implements Initializable {
             btnGenerarPdf.setDisable(newVal == null);
         });
 
+        btnRegistrarPasajero.setOnAction(event -> handleRegistrarpasajero());
+
         cargarVuelosParaSeleccionar();
 
     }
@@ -106,6 +128,63 @@ public class EmbarqueController implements Initializable {
         listaPasajerosObservable.clear();
         listaPasajerosObservable.addAll(pasajeros);
         actualizarContador();
+    }
+
+    private void handleRegistrarpasajero() {
+        Vuelo vuelo = vueloComboBox.getValue();
+
+        // 1. Validaciones
+        if (vuelo == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Sin Vuelo", "Por favor seleccione un vuelo arriba primero.");
+            return;
+        }
+
+        if (txtNewNombre.getText().isEmpty() || txtNewDoc.getText().isEmpty() || txtNewAsiento.getText().isEmpty()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Datos Incompletos", "Nombre, DNI y Asiento son obligatorios.");
+            return;
+        }
+
+        try {
+            Pasajero p = new Pasajero();
+            p.setNombres(txtNewNombre.getText());
+            p.setApellidos(txtNewApellido.getText());
+            p.setNumeroDocumento(txtNewDoc.getText());
+            p.setNacionalidad(txtNewNac.getText());
+            p.setCorreo("venta.puerta@zephyr.com");
+            p.setTelefono("000000");
+            p.setIdTipoDocumento(1);
+
+            Pasajero guardado = pasajeroService.registrarPasajero(p);
+
+            Boleto b = new Boleto();
+            b.setCodigoBoleto("GATE-" + (System.currentTimeMillis() % 10000));
+            b.setFechaEEmision(LocalDateTime.now());
+            b.setAsiento(txtNewAsiento.getText());
+
+            try {
+                b.setPrecioTotal(new BigDecimal(txtNewPrecio.getText()));
+            } catch (Exception e) {
+                b.setPrecioTotal(BigDecimal.ZERO);
+            }
+
+            b.setIdPasajero(guardado.getIdPasajero());
+            b.setIdVuelo(vuelo.getIdVuelo());
+            b.setIdClaseVuelo(1);
+            b.setIdEstadoEmbarque(2);
+
+            boletoService.registrarBoleto(b);
+
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "Pasajero " + p.getNombres() + " registrado y añadido al vuelo.");
+
+            txtNewNombre.clear(); txtNewApellido.clear(); txtNewDoc.clear();
+            txtNewNac.clear(); txtNewAsiento.clear(); txtNewPrecio.clear();
+
+            cargarManifiesto(vuelo.getIdVuelo());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo registrar: " + e.getMessage());
+        }
     }
 
     private void handleVerificarBoleto() {

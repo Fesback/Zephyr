@@ -15,60 +15,95 @@
 <?import javafx.scene.control.Button?>
 <?import java.net.URL?>
 
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.ScrollPane?>
+
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.zephyr.ui.controller.EmbarqueController"
-      alignment="TOP_LEFT" spacing="15.0" styleClass="main-content-vbox">
+      styleClass="main-content-vbox" spacing="0">
 
     <stylesheets>
         <URL value="@../css/dashboard-styles.css" />
         <URL value="@../css/embarque-styles.css" />
     </stylesheets>
 
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-
-    <children>
+    <VBox spacing="10.0" style="-fx-padding: 15 20 10 20; -fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
         <Label text="Módulo de Embarque" styleClass="dashboard-title" />
-
-        <HBox alignment="CENTER_LEFT" spacing="10.0">
-            <children>
-                <Label text="Seleccionar Vuelo Asignado:">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Label>
-                <ComboBox fx:id="vueloComboBox" prefWidth="350.0"
-                          promptText="Seleccione un vuelo..." />
-            </children>
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox spacing="5">
+                <Label text="Vuelo Asignado:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="vueloComboBox" prefWidth="350.0" promptText="Seleccione un vuelo..." />
+            </VBox>
+            <Label fx:id="contadorLabel" text="Pasajeros Abordo: 0 / 0" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 20 0 0 20;" />
         </HBox>
+    </VBox>
 
-        <HBox alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-padding: 10px 0;">
-            <children>
-                <VBox>
-                    <Label text="Escanear Código de Boleto:"/>
-                    <TextField fx:id="boletoField" prefHeight="40.0" prefWidth="300.0"
-                               promptText="Ej: AXD456" />
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+        <content>
+            <VBox spacing="20.0" style="-fx-padding: 20;">
+
+                <VBox spacing="10.0">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <TextField fx:id="boletoField" promptText="Escanear Código (AXD...)" prefWidth="250" prefHeight="35"/>
+                        <Button fx:id="verificarButton" text="Verificar Boleto" styleClass="action-button-success" prefHeight="35"/>
+                        <VBox HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnGenerarPdf" text="Generar Boarding Pass (PDF)" styleClass="action-button-secondary" disable="true" prefHeight="35"/>
+                    </HBox>
+
+                    <Label fx:id="labelManifiesto" text="Manifiesto de Pasajeros" styleClass="dashboard-subtitle" />
+
+                    <TableView fx:id="tablaPasajeros" prefHeight="450.0">
+                        <columns>
+                            <TableColumn fx:id="colNombre" prefWidth="300.0" text="Pasajero" />
+                            <TableColumn fx:id="colAsiento" prefWidth="100.0" text="Asiento" />
+                            <TableColumn fx:id="colEstado" prefWidth="200.0" text="Estado" />
+                        </columns>
+                    </TableView>
                 </VBox>
-                <Button fx:id="verificarButton" mnemonicParsing="false" prefHeight="40.0"
-                        text="Verificar Boleto" styleClass="action-button-success" />
 
-                <Button fx:id="btnGenerarPdf" mnemonicParsing="false" prefHeight="40.0"
-                        text="Generar Boarding Pass (PDF)" styleClass="action-button-secondary"
-                        disable="true" /> </children>
-        </HBox>
+                <Separator />
 
-        <Label fx:id="labelManifiesto" text="Manifiesto de Pasajeros" styleClass="dashboard-subtitle" />
+                <VBox spacing="15.0" style="-fx-background-color: #f4f4f4; -fx-padding: 20; -fx-border-radius: 8; -fx-border-color: #dcdcdc;">
+                    <Label text="Registro de Pasajero de Último Minuto (Venta en Puerta)" styleClass="dashboard-subtitle" />
 
-        <TableView fx:id="tablaPasajeros" prefHeight="400.0" VBox.vgrow="ALWAYS">
-            <columns>
-                <TableColumn fx:id="colNombre" prefWidth="250.0" text="Pasajero" />
-                <TableColumn fx:id="colAsiento" prefWidth="100.0" text="Asiento" />
-                <TableColumn fx:id="colEstado" prefWidth="200.0" text="Estado" />
-            </columns>
-        </TableView>
+                    <GridPane hgap="20" vgap="15">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="100" halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints minWidth="100" halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints minWidth="100" halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
 
-        <Label fx:id="contadorLabel" text="Pasajeros Abordo: 0 / 0" />
+                        <Label text="Nombres:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtNewNombre" promptText="Ej: Juan" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-    </children>
+                        <Label text="Apellidos:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtNewApellido" promptText="Ej: Perez" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+                        <Label text="DNI/Doc:" GridPane.rowIndex="0" GridPane.columnIndex="4"/>
+                        <TextField fx:id="txtNewDoc" promptText="12345678" GridPane.rowIndex="0" GridPane.columnIndex="5"/>
+
+                        <Label text="Nacionalidad:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtNewNac" promptText="Ej: Peruana" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Asiento:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <TextField fx:id="txtNewAsiento" promptText="Ej: 15F" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+
+                        <Label text="Precio ($):" GridPane.rowIndex="1" GridPane.columnIndex="4"/>
+                        <TextField fx:id="txtNewPrecio" promptText="150.00" GridPane.rowIndex="1" GridPane.columnIndex="5"/>
+                    </GridPane>
+
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button fx:id="btnRegistrarPasajero" text="+ Registrar Pasajero y Emitir Boleto" styleClass="action-button-success" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
 </VBox>

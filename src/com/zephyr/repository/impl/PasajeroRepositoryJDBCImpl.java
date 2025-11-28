@@ -40,6 +40,34 @@ public class PasajeroRepositoryJDBCImpl implements PasajeroRepository {
         return Optional.empty();
     }
 
+    @Override
+    public Pasajero save(Pasajero p) {
+        String sql = "INSERT INTO Pasajero (nombres, apellidos, numero_documento, nacionalidad, correo, telefono, id_tipo_documento)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id_pasajero";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, p.getNombres());
+            pstmt.setString(2, p.getApellidos());
+            pstmt.setString(3, p.getNumeroDocumento());
+            pstmt.setString(4, p.getNacionalidad());
+            pstmt.setString(5, p.getCorreo());
+            pstmt.setString(6, p.getTelefono());
+            pstmt.setInt(7, p.getIdTipoDocumento());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                p.setIdPasajero(rs.getInt(1)); // Asignamos el ID nuevo al objeto
+                System.out.println("Pasajero registrado con ID: " + p.getIdPasajero());
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al registrar el pasajero: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return p;
+    }
+
     private Pasajero mapResultSetToPasajero(ResultSet rs) throws SQLException {
         return new Pasajero(
                 rs.getInt("id_pasajero"),

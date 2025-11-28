@@ -11,4 +11,5 @@ public interface BoletoRepository {
     String verificarPasajeroEnPuerta(int idBoleto);
     Optional<Boleto> findBoletoByCodigo(String codigoBoleto);
     Optional<Boleto> findById(int idBoleto);
+    void save(Boleto boleto);
 }

@@ -37,4 +37,9 @@ public class BoletoServiceImpl implements BoletoService {
 
         return boletoRepository.verificarPasajeroEnPuerta(idBoleto);
     }
+
+    @Override
+    public void registrarBoleto(Boleto boleto) {
+        boletoRepository.save(boleto);
+    }
 }

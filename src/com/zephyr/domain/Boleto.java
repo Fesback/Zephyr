@@ -16,6 +16,10 @@ public class Boleto {
     private int idEstadoEmbarque;
 
 
+
+    public Boleto() {
+    }
+
     //Cosntructor
 
     public Boleto(int idBoleto, String codigoBoleto, LocalDateTime fechaEEmision, String asiento, BigDecimal precioTotal, int idPasajero, int idVuelo, int idClaseVuelo, int idEstadoEmbarque) {

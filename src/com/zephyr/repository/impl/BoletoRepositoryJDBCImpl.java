@@ -97,6 +97,28 @@ public class BoletoRepositoryJDBCImpl implements BoletoRepository {
         return Optional.empty();
     }
 
+    @Override
+    public void save(Boleto b) {
+        String sql = "INSERT INTO Boleto (codigo_boleto, fecha_emision, asiento, precio_total, id_pasajero, id_vuelo, id_clase_vuelo, id_estado_embarque) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, b.getCodigoBoleto());
+            pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(b.getFechaEEmision()));
+            pstmt.setString(3, b.getAsiento());
+            pstmt.setBigDecimal(4, b.getPrecioTotal());
+            pstmt.setInt(5, b.getIdPasajero());
+            pstmt.setInt(6, b.getIdVuelo());
+            pstmt.setInt(7, b.getIdClaseVuelo());
+            pstmt.setInt(8, b.getIdEstadoEmbarque());
+
+            pstmt.executeUpdate();
+            System.out.println("Boleto emitido: " + b.getCodigoBoleto());
+        } catch (SQLException e) {
+            System.err.println("Error al guardar boleto: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private PasajeroPorVuelo mapResultSetToPasajeroPorVuelo(ResultSet rs) throws SQLException {
         return  new PasajeroPorVuelo(
                 rs.getInt("id_vuelo"),

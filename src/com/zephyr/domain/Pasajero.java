@@ -14,6 +14,10 @@ public class Pasajero {
     private String telefono;
     private int idTipoDocumento;
 
+
+    public Pasajero() {
+    }
+
     // constructor
     public Pasajero(int idPasajero, String nombres, String apellidos, LocalDate fechanNacimiento, String numeroDocumento, String nacionalidad, String correo, String telefono, int idTipoDocumento) {
         this.idPasajero = idPasajero;
