@@ -2,6 +2,7 @@ package com.zephyr.service.impl;
 
 import com.itextpdf.barcodes.Barcode128;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.layout.element.Image;
 
 //fuentes - no fue la mejor idea
@@ -24,6 +25,7 @@ import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import com.zephyr.domain.Boleto;
 import com.zephyr.domain.Pasajero;
+import com.zephyr.domain.PasajeroPorVuelo;
 import com.zephyr.domain.Vuelo;
 import com.zephyr.repository.BoletoRepository;
 import com.zephyr.repository.PasajeroRepository;
@@ -36,6 +38,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -49,6 +52,7 @@ public class ReportServiceImpl implements ReportService {
     private static final Color COLOR_PRIMARIO = new DeviceRgb(0, 82, 204);
     private static final Color COLOR_TEXTO_BLANCO = new DeviceRgb(255, 255, 255);
     private static final Color COLOR_TEXTO_GRIS = new DeviceRgb(138, 138, 138);
+    private static final Color COLOR_TABLA_GRIS = new DeviceRgb(140, 135,135);
 
     public ReportServiceImpl() {
         this.boletoRepository = new BoletoRepositoryJDBCImpl();
@@ -238,6 +242,63 @@ public class ReportServiceImpl implements ReportService {
 
         } catch (Exception e) {
             System.err.println("Error al generar el PDF profesional: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public String generarManifiestoVuelo(int idVuelo) {
+        Optional<Vuelo> vueloOpt = vueloRepository.findVueloDetalladoById(idVuelo);
+        if (vueloOpt.isEmpty()) return null;
+        Vuelo vuelo = vueloOpt.get();
+
+        List<PasajeroPorVuelo> listaPasajeros = boletoRepository.findPasajerosByVueloId(idVuelo);
+
+        String userHome = System.getProperty("user.home");
+        String filePath = userHome + "/Downloads/Manifiesto_" + vuelo.getCodigoVuelo() + ".pdf";
+
+        try {
+            PdfWriter writer = new PdfWriter(filePath);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf, PageSize.A4);
+            document.setMargins(20, 20, 20, 20);
+
+            document.add(new Paragraph("MANIFIESTO DE VUELO")
+                    .setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("Vuelo: " + vuelo.getCodigoVuelo() + " | " + vuelo.getAerolinea())
+                    .setTextAlignment(TextAlignment.CENTER).setFontSize(12));
+
+            document.add(new Paragraph(vuelo.getOrigenIata() + " -> " + vuelo.getDestinoIata() +
+                    " | Fecha: " + vuelo.getFechaSalida().toLocalDate())
+                    .setTextAlignment(TextAlignment.CENTER).setFontSize(12).setMarginBottom(20));
+
+            float[] columnWidths = {1, 4, 2, 2};
+            Table table = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+
+            table.addHeaderCell(new Cell().add(new Paragraph("ASIENTO").setBold().setFontColor(ColorConstants.WHITE)).setBackgroundColor(COLOR_TABLA_GRIS));
+            table.addHeaderCell(new Cell().add(new Paragraph("PASAJERO").setBold().setFontColor(ColorConstants.WHITE)).setBackgroundColor(COLOR_TABLA_GRIS));
+            table.addHeaderCell(new Cell().add(new Paragraph("DOCUMENTO").setBold().setFontColor(ColorConstants.WHITE)).setBackgroundColor(COLOR_TABLA_GRIS));
+            table.addHeaderCell(new Cell().add(new Paragraph("ESTADO").setBold().setFontColor(ColorConstants.WHITE)).setBackgroundColor(COLOR_TABLA_GRIS));
+
+            for (PasajeroPorVuelo p : listaPasajeros) {
+                table.addCell(new Paragraph(p.getAsiento()).setFontSize(10));
+                table.addCell(new Paragraph(p.getNombres() + " " + p.getApellidos()).setFontSize(10));
+                table.addCell(new Paragraph(p.getNumeroDocumento()).setFontSize(10));
+                table.addCell(new Paragraph(p.getEstadoEmbarque()).setFontSize(10));
+            }
+
+            document.add(table);
+
+            document.add(new Paragraph("\nTotal Pasajeros: " + listaPasajeros.size())
+                    .setBold().setTextAlignment(TextAlignment.RIGHT));
+
+            document.close();
+            System.out.println("Manifiesto generado en: " + filePath);
+            return filePath;
+
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

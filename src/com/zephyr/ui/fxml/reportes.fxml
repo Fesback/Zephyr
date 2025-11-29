@@ -10,37 +10,64 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Label?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ComboBox?>
+
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.zephyr.ui.controller.ReportesController"
-      alignment="TOP_LEFT" spacing="15.0" styleClass="main-content-vbox">
+      styleClass="main-content-vbox">
 
     <stylesheets>
         <URL value="@../css/dashboard-styles.css" />
         <URL value="@../css/reportes-styles.css" />
     </stylesheets>
 
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
+    <Label text="Centro de Reportes" styleClass="dashboard-title" style="-fx-padding: 20 0 0 20;" />
 
-    <children>
-        <Label text="Módulo de Reportes" styleClass="dashboard-title" />
-        <Label text="Generar y Enviar Tarjeta de Embarque" styleClass="dashboard-subtitle" />
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 10;" VBox.vgrow="ALWAYS">
+        <content>
+            <VBox spacing="20.0" style="-fx-padding: 10;">
 
-        <VBox spacing="10.0" style="-fx-padding: 10px 0;">
-            <children>
-                <Label text="Buscar por Código de Boleto:"/>
-                <TextField fx:id="boletoField" prefHeight="40.0" maxWidth="300.0"
-                           promptText="Ej: AXD456" styleClass="search-field"/>
+                <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2); -fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8;">
+                    <Label text="Reporte Operativo: Manifiesto de Vuelo" styleClass="dashboard-subtitle" />
+                    <Label text="Genera una lista completa de pasajeros y su estado de embarque para la tripulación." textFill="#666666"/>
+                    <Separator />
 
-                <Label text="Email del Destinatario:"/>
-                <TextField fx:id="emailField" prefHeight="40.0" maxWidth="300.0"
-                           promptText="pasajero@email.com" styleClass="search-field"/>
-            </children>
-        </VBox>
+                    <HBox spacing="15.0" alignment="CENTER_LEFT">
+                        <VBox spacing="5">
+                            <Label text="Seleccionar Vuelo del Día:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                            <ComboBox fx:id="comboVuelosReporte" prefWidth="300.0" promptText="Seleccione un vuelo..." style="-fx-font-size: 14px;"/>
+                        </VBox>
 
-        <Button fx:id="btnGenerarEnviar" mnemonicParsing="false" prefHeight="40.0"
-                text="Generar y Enviar PDF" styleClass="action-button-success" />
+                        <VBox alignment="BOTTOM_LEFT">
+                            <Button fx:id="btnGenerarManifiesto" text="Descargar PDF Manifiesto"
+                                    styleClass="action-button-success" style="-fx-font-size: 14px; -fx-padding: 8 15;" disable="true"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
 
-    </children>
+                <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2); -fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8;">
+                    <Label text="Atención al Pasajero: Reenvío de Itinerario" styleClass="dashboard-subtitle" />
+                    <Label text="Genera y envía la confirmación de vuelo y boarding pass por correo electrónico." textFill="#666666"/>
+                    <Separator />
+
+                    <HBox spacing="20.0" alignment="BOTTOM_LEFT">
+                        <VBox spacing="5">
+                            <Label text="Código de Boleto:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                            <TextField fx:id="boletoField" prefWidth="150.0" promptText="Ej: AXD456" prefHeight="35"/>
+                        </VBox>
+
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Email Destinatario:" style="-fx-font-weight: bold; -fx-font-size: 12px;"/>
+                            <TextField fx:id="emailField" promptText="pasajero@email.com" prefHeight="35" maxWidth="Infinity"/>
+                        </VBox>
+
+                        <Button fx:id="btnGenerarEnviar" text="Generar y Enviar Correo" styleClass="action-button-secondary" prefHeight="35" style="-fx-font-size: 13px;"/>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
 </VBox>
