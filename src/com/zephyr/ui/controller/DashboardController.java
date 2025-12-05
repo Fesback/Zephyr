@@ -43,6 +43,7 @@ public class DashboardController implements Initializable {
     @FXML private MenuButton menuUsuario;
     @FXML private MenuItem menuItemLogout;
     @FXML private MenuItem menuItemPerfil;
+    @FXML private Button btnAsignarPersonal;
 
     @FXML private TableView<Vuelo> tablaVuelos;
     @FXML private TableColumn<Vuelo,String> colCodigoVuelo;
@@ -107,6 +108,7 @@ public class DashboardController implements Initializable {
 
         btnIniciarEmbarque.setOnAction(event -> handleActualizarEstado(2, "Embarcando"));
         btnRetrasarVuelo.setOnAction(event -> handleActualizarEstado(5,"Retrasado"));
+        btnAsignarPersonal.setOnAction(e -> abrirPopupAsignarPersonal());
 
         //logout
         menuItemLogout.setOnAction(event -> handleLogout());
@@ -164,6 +166,21 @@ public class DashboardController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void abrirPopupAsignarPersonal() {
+        if (vueloSeleccionado == null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zephyr/ui/fxml/asignar-personal.fxml"));
+            Parent root = loader.load();
+            AsignarPersonalController controller = loader.getController();
+            controller.setDatos(vueloSeleccionado);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Asignación de Personal");
+            stage.showAndWait();
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     private void cargarVistaEnCentro(String fxmlPath) {

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.zephyr.ui.controller.AsignarPersonalController"
+      styleClass="main-content-vbox" spacing="20.0" prefWidth="650.0" prefHeight="400.0">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+        <URL value="@../css/personal-styles.css" />
+    </stylesheets>
+
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <VBox spacing="15.0" prefWidth="280.0" style="-fx-background-color: #f9f9f9; -fx-padding: 15; -fx-border-color: #e0e0e0; -fx-border-radius: 5;">
+        <Label text="Asignar Personal" styleClass="dashboard-subtitle" />
+        <Label fx:id="lblVueloInfo" text="Vuelo: --" style="-fx-text-fill: #666;" />
+
+        <VBox spacing="5.0">
+            <Label text="Seleccione Empleado:" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="comboEmpleado" promptText="Empleado..." maxWidth="Infinity" />
+        </VBox>
+
+        <VBox spacing="5.0">
+            <Label text="Rol en el Vuelo:" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="comboRolVuelo" promptText="Ej: Agente Principal" maxWidth="Infinity" />
+        </VBox>
+
+        <VBox VBox.vgrow="ALWAYS" />
+
+        <Button fx:id="btnAsignar" text="Asignar al Vuelo" styleClass="action-button-success" maxWidth="Infinity" />
+    </VBox>
+
+    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+        <Label text="Equipo Asignado" styleClass="dashboard-title" style="-fx-font-size: 18px;" />
+
+        <TableView fx:id="tablaAsignaciones" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colEmpleado" prefWidth="180.0" text="Empleado" />
+                <TableColumn fx:id="colRol" prefWidth="150.0" text="Rol Asignado" />
+            </columns>
+        </TableView>
+
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="btnCerrar" text="Cerrar" styleClass="action-button-secondary" />
+        </HBox>
+    </VBox>
+</HBox>
