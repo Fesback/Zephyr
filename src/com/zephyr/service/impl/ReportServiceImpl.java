@@ -23,14 +23,13 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
-import com.zephyr.domain.Boleto;
-import com.zephyr.domain.Pasajero;
-import com.zephyr.domain.PasajeroPorVuelo;
-import com.zephyr.domain.Vuelo;
+import com.zephyr.domain.*;
 import com.zephyr.repository.BoletoRepository;
+import com.zephyr.repository.EquipajeRepository;
 import com.zephyr.repository.PasajeroRepository;
 import com.zephyr.repository.VueloRepository;
 import com.zephyr.repository.impl.BoletoRepositoryJDBCImpl;
+import com.zephyr.repository.impl.EquipajeRepositoryJDBCImpl;
 import com.zephyr.repository.impl.PasajeroRepositoryJDBCImpl;
 import com.zephyr.repository.impl.VueloRepositoryJDBCImpl;
 import com.zephyr.service.ReportService;
@@ -47,6 +46,7 @@ public class ReportServiceImpl implements ReportService {
     private final BoletoRepository boletoRepository;
     private final VueloRepository vueloRepository;
     private final PasajeroRepository pasajeroRepository;
+    private final EquipajeRepository equipajeRepository;
 
     //colores
     private static final Color COLOR_PRIMARIO = new DeviceRgb(0, 82, 204);
@@ -58,6 +58,7 @@ public class ReportServiceImpl implements ReportService {
         this.boletoRepository = new BoletoRepositoryJDBCImpl();
         this.vueloRepository = new VueloRepositoryJDBCImpl();
         this.pasajeroRepository = new PasajeroRepositoryJDBCImpl();
+        this.equipajeRepository = new EquipajeRepositoryJDBCImpl();
     }
 
     @Override
@@ -296,6 +297,74 @@ public class ReportServiceImpl implements ReportService {
 
             document.close();
             System.out.println("Manifiesto generado en: " + filePath);
+            return filePath;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public String generarEtiquetaEquipaje(int idEquipaje) {
+        Optional<Equipaje> eqOpt = equipajeRepository.findById(idEquipaje);
+        if (eqOpt.isEmpty()) return null;
+        Equipaje equipaje = eqOpt.get();
+
+        Optional<Boleto> boletoOpt = boletoRepository.findById(equipaje.getIdBoleto());
+        if (boletoOpt.isEmpty()) return null;
+        Boleto boleto = boletoOpt.get();
+
+        Optional<Vuelo> vueloOpt = vueloRepository.findVueloDetalladoById(boleto.getIdVuelo());
+        if (vueloOpt.isEmpty()) return null;
+        Vuelo vuelo = vueloOpt.get();
+
+        Optional<Pasajero> paxOpt = pasajeroRepository.findById(boleto.getIdPasajero());
+        String nombrePax = paxOpt.map(p -> p.getNombres() + " " + p.getApellidos()).orElse("Pasajero");
+
+        String userHome = System.getProperty("user.home");
+        String filePath = userHome + "/Downloads/BAGTAG_" + equipaje.getCodigoEquipaje() + ".pdf";
+        PageSize tagSize = new PageSize(250, 400);
+
+        try {
+            PdfWriter writer = new PdfWriter(filePath);
+            PdfDocument pdf = new PdfDocument(writer);
+            pdf.setDefaultPageSize(tagSize);
+            Document document = new Document(pdf);
+            document.setMargins(10, 10, 10, 10);
+
+            document.add(new Paragraph("BAGGAGE TAG")
+                    .setBold().setFontSize(16).setTextAlignment(TextAlignment.CENTER));
+            document.add(new Paragraph("ZEPHYR AIRLINES")
+                    .setFontSize(10).setTextAlignment(TextAlignment.CENTER).setMarginBottom(10));
+
+            document.add(new Paragraph("TO:")
+                    .setFontSize(10).setBold());
+            document.add(new Paragraph(vuelo.getDestinoIata())
+                    .setBold().setFontSize(60).setTextAlignment(TextAlignment.CENTER));
+
+            Table tableInfo = new Table(UnitValue.createPercentArray(new float[]{50f, 50f})).useAllAvailableWidth();
+            tableInfo.addCell(crearCeldaDetalle("FLIGHT", vuelo.getCodigoVuelo()));
+            tableInfo.addCell(crearCeldaDetalle("DATE", vuelo.getFechaSalida().toLocalDate().toString()));
+            document.add(tableInfo);
+
+            document.add(new Paragraph("\n----------------------------------").setTextAlignment(TextAlignment.CENTER));
+            Table tableBag = new Table(UnitValue.createPercentArray(new float[]{50f, 50f})).useAllAvailableWidth();
+            tableBag.addCell(crearCeldaDetalle("WEIGHT", equipaje.getPeso() + " kg"));
+            tableBag.addCell(crearCeldaDetalle("TYPE", equipaje.getTipo()));
+            document.add(tableBag);
+
+            document.add(new Paragraph(nombrePax).setBold().setFontSize(12).setTextAlignment(TextAlignment.CENTER).setMarginTop(10));
+
+            Barcode128 barcode = new Barcode128(pdf);
+            barcode.setCode(equipaje.getCodigoEquipaje());
+            barcode.setBarHeight(50f);
+            Image imgBarcode = new Image(barcode.createFormXObject(pdf)).setWidth(UnitValue.createPercentValue(90));
+
+            Cell cellBar = new Cell().add(imgBarcode).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.CENTER);
+            document.add(cellBar.setMarginTop(15));
+
+            document.close();
             return filePath;
 
         } catch (Exception e) {

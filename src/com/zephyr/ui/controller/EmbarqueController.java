@@ -20,6 +20,10 @@ import com.zephyr.service.impl.ReportServiceImpl;
 import com.zephyr.service.impl.VueloServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,6 +45,7 @@ public class EmbarqueController implements Initializable {
     @FXML private TableColumn<PasajeroPorVuelo, String> colEstado;
     @FXML private TextField boletoField;
     @FXML private Button verificarButton;
+    @FXML private Button btnEquipaje;
     @FXML private Label contadorLabel;
 
     @FXML private Label labelManifiesto;
@@ -83,7 +88,6 @@ public class EmbarqueController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombres"));
         colAsiento.setCellValueFactory(new PropertyValueFactory<>("asiento"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estadoEmbarque"));
@@ -95,12 +99,16 @@ public class EmbarqueController implements Initializable {
         vueloComboBox.setOnAction(event -> handleSeleccionarVuelo());
         verificarButton.setOnAction(event -> handleVerificarBoleto());
         btnGenerarPdf.setOnAction(event -> handleGenerarPdf());
+        btnRegistrarPasajero.setOnAction(event -> handleRegistrarpasajero());
+
+        btnEquipaje.setOnAction(event -> abrirPopupEquipaje());
 
         tablaPasajeros.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            btnGenerarPdf.setDisable(newVal == null);
-        });
+            boolean haySeleccion = (newVal != null);
 
-        btnRegistrarPasajero.setOnAction(event -> handleRegistrarpasajero());
+            btnGenerarPdf.setDisable(!haySeleccion);
+            btnEquipaje.setDisable(!haySeleccion);
+        });
 
         cargarVuelosParaSeleccionar();
 
@@ -248,6 +256,26 @@ public class EmbarqueController implements Initializable {
                 return null;
             }
         });
+    }
+
+
+    private void abrirPopupEquipaje() {
+        PasajeroPorVuelo pasajero = tablaPasajeros.getSelectionModel().getSelectedItem();
+        if (pasajero == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zephyr/ui/fxml/equipaje.fxml"));
+            Parent root = loader.load();
+
+            EquipajeController controller = loader.getController();
+            controller.setDatosPasajero(pasajero);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestión de Equipaje");
+            stage.showAndWait();
+
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String contenido) {

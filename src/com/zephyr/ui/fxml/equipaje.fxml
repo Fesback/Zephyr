@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.zephyr.ui.controller.EquipajeController"
+      styleClass="main-content-vbox" spacing="20.0" prefWidth="700.0" prefHeight="400.0">
+
+    <stylesheets>
+        <URL value="@../css/dashboard-styles.css" />
+        <URL value="@../css/personal-styles.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <VBox spacing="15.0" prefWidth="300.0" style="-fx-background-color: #f9f9f9; -fx-padding: 15; -fx-border-color: #e0e0e0; -fx-border-radius: 5;">
+        <Label text="Registrar Nueva Pieza" styleClass="dashboard-subtitle" />
+
+        <VBox spacing="5.0">
+            <Label text="Tipo de Equipaje:" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="comboTipo" promptText="Seleccione Tipo" maxWidth="Infinity" />
+        </VBox>
+
+        <VBox spacing="5.0">
+            <Label text="Peso (kg):" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtPeso" promptText="Ej: 23.5" />
+        </VBox>
+
+        <VBox spacing="5.0">
+            <Label text="Dimensiones (L x A x P):" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="txtDimensiones" promptText="Ej: 60x40x25 cm" />
+        </VBox>
+
+        <VBox VBox.vgrow="ALWAYS" /> <Button fx:id="btnRegistrar" text="+ Registrar Maleta" styleClass="action-button-success" maxWidth="Infinity" />
+    </VBox>
+
+    <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+        <Label fx:id="lblTituloPasajero" text="Equipaje de: --" styleClass="dashboard-title" style="-fx-font-size: 18px;" />
+
+        <TableView fx:id="tablaEquipaje" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Tag ID" />
+                <TableColumn fx:id="colTipo" prefWidth="100.0" text="Tipo" />
+                <TableColumn fx:id="colPeso" prefWidth="80.0" text="Peso" />
+                <TableColumn fx:id="colDimensiones" prefWidth="100.0" text="Dimens." />
+            </columns>
+        </TableView>
+
+        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+            <Button fx:id="btnImprimirTag" text="Imprimir Tag (PDF)" styleClass="action-button-success" disable="true"/>
+            <Button fx:id="btnCerrar" text="Cerrar Ventana" styleClass="action-button-secondary" />
+        </HBox>
+
+    </VBox>
+
+</HBox>
