@@ -179,6 +179,7 @@ public class DashboardController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Asignación de Personal");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/zephyr/ui/images/zephyr-icon.png")));
             stage.showAndWait();
         } catch (Exception e) { e.printStackTrace(); }
     }

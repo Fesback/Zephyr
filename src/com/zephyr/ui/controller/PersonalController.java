@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -138,6 +139,7 @@ public class PersonalController implements Initializable {
             popupStage.setTitle("Registrar Nuevo Agente");
             popupStage.setScene(new Scene(root, 500, 650));
             popupStage.setResizable(false);
+            popupStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/zephyr/ui/images/zephyr-icon.png")));
             popupStage.showAndWait();
 
         } catch (IOException e) {

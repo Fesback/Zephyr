@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -71,7 +72,7 @@ public class VuelosController implements Initializable {
             stage.setTitle("Registrar Nuevo Vuelo");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/zephyr/ui/images/zephyr-icon.png")));
             stage.showAndWait();
             cargarVuelos();
 

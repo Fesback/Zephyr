@@ -15,6 +15,8 @@
 
 
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <GridPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.zephyr.ui.controller.LoginController" stylesheets="@../css/login-page.css">
 
@@ -35,14 +37,14 @@
               GridPane.columnIndex="1" GridPane.rowIndex="0">
             <children>
 
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="LoginLogo" textAlignment="CENTER">
-                    <font>
-                        <Font size="50.0" />
-                    </font>
+                <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/user-img-back.png" />
+                    </image>
                     <VBox.margin>
-                        <Insets bottom="30.0" />
+                        <Insets bottom="20.0" />
                     </VBox.margin>
-                </Text>
+                </ImageView>
 
                 <TextField fx:id="usuarioField" prefHeight="35.0" maxWidth="300.0"
                            promptText="Usuario"

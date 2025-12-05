@@ -23,6 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.fxml.FXML;
@@ -273,6 +274,7 @@ public class EmbarqueController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Gestión de Equipaje");
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/zephyr/ui/images/zephyr-icon.png")));
             stage.showAndWait();
 
         } catch (Exception e) { e.printStackTrace(); }
