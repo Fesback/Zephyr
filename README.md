@@ -73,10 +73,10 @@ La base de datos `zephyr` en PostgreSQL es el núcleo del sistema. Está altamen
 
 
 2.  **Ejecuta los scripts de la carpeta `/database` en este orden:**
-    * `tables.sql`
-    * `inserts.sql`
-    * `view_SProcedures.sql`
-    * `Transac_inserts.sql`
+    * `02_inserts_maestros.sql`
+    * `01_schema_structure.sql`
+    * `03_logic_views.sql`
+    * `04_data_demo.sql`
     
 
 3.  **Listo! tienes la base de datos configurada.**
