@@ -43,7 +43,7 @@ INSERT INTO PuertaDeEmbarque (codigo_puerta, ubicacion_terminal, id_aeropuerto) 
         ('C30', 'Terminal 1', 3),
         ('D25', 'Terminal D', 5),
         ('T1', 'Terminal T', 4),
-        ('T3', 'Terminal T'
+        ('T3', 'Terminal T', 4);
 
 
 -- -----------------------------------------------------

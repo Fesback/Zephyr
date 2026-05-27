@@ -57,7 +57,7 @@ public class PasajeroRepositoryJDBCImpl implements PasajeroRepository {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                p.setIdPasajero(rs.getInt(1)); // Asignamos el ID nuevo al objeto
+                p.setIdPasajero(rs.getInt(1));
                 System.out.println("Pasajero registrado con ID: " + p.getIdPasajero());
             }
         } catch (SQLException e) {
